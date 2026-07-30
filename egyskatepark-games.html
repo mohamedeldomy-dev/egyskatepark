@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egy Skatepark — Games 🎮</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Cairo:wght@500;700;800;900&family=Lalezar&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+<style>
+:root{
+  --paper:#f2f5f6;--concrete:#dfe8ec;--ink:#12262c;--soft:#4e6670;
+  --teal:#0e8b9c;--yellow:#ffc933;--coral:#ff5c39;--green:#1fb757;
+  --r:22px;--disp:'Space Grotesk','Cairo',sans-serif;--body:'Cairo','Space Grotesk',sans-serif;
+  --shadow:0 18px 50px rgba(18,38,44,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);min-height:100vh}
+button{font-family:var(--body);cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+html[dir="rtl"] h1,html[dir="rtl"] h2{font-family:'Lalezar','Cairo',sans-serif;font-weight:400}
+
+header{background:var(--ink);color:#fff;padding:18px 0}
+.head-in{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:980px;margin:0 auto;padding:0 20px}
+.logo{font-family:var(--disp);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:9px;font-size:.95rem}
+.logo .dot{width:9px;height:9px;border-radius:50%;background:var(--yellow)}
+.head-in .row{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:30px;border:none;font-weight:900;font-size:.88rem;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+
+.hero-g{text-align:center;padding:44px 0 10px}
+.hero-g h1{font-family:var(--disp);font-weight:700;font-size:clamp(1.9rem,6vw,3.2rem);letter-spacing:-1px}
+.hero-g h1 .yline{position:relative;white-space:nowrap}
+.hero-g h1 .yline::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:.32em;background:var(--yellow);z-index:-1;transform:rotate(-1deg);border-radius:4px}
+.hero-g p{color:var(--soft);font-weight:700;margin-top:8px}
+
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0}
+.tab{background:#fff;border:2.5px solid transparent;border-radius:30px;padding:12px 22px;font-weight:900;font-size:.92rem;box-shadow:0 6px 20px rgba(18,38,44,.08);transition:.15s}
+.tab:hover{transform:translateY(-2px)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--yellow)}
+
+.game{display:none;background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:28px;margin-bottom:50px}
+.game.on{display:block;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+.game h2{font-family:var(--disp);font-weight:700;font-size:1.3rem;margin-bottom:6px}
+.game .sub{color:var(--soft);font-weight:700;font-size:.9rem;margin-bottom:18px}
+.score-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sc{background:var(--paper);border-radius:14px;padding:10px 18px;font-weight:900}
+.sc b{font-family:var(--disp);color:var(--teal)}
+.sc.best b{color:var(--coral)}
+
+/* runner */
+#runCanvas{width:100%;border-radius:16px;background:linear-gradient(180deg,#cfe7ee 0%,#e8f1f4 55%,#b9c9d1 55.2%,#c7d5dc 100%);display:block;touch-action:manipulation}
+.hint-line{text-align:center;color:var(--soft);font-weight:800;font-size:.85rem;margin-top:10px}
+
+/* wheel */
+.wheel-wrap{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+@media(max-width:760px){.wheel-wrap{grid-template-columns:1fr;justify-items:center}}
+.wheel-box{position:relative;width:min(340px,80vw)}
+#wheelCanvas{width:100%;display:block}
+.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:2rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))}
+.prize-box{background:var(--paper);border-radius:16px;padding:22px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.prize-box b{font-family:var(--disp);font-size:1.3rem}
+.prize-box .code{font-family:monospace;font-weight:900;background:#fff;border:2px dashed var(--teal);border-radius:10px;padding:6px 14px;display:inline-block;margin:6px auto;color:var(--teal)}
+.prize-box .small{font-size:.78rem;color:var(--soft);font-weight:700}
+
+/* quiz */
+.q-card{background:var(--paper);border-radius:16px;padding:24px}
+.q-card h3{font-size:1.1rem;margin-bottom:16px;font-weight:900}
+.opts{display:grid;gap:10px}
+.opt{background:#fff;border:2.5px solid var(--concrete);border-radius:13px;padding:13px 16px;font-weight:800;text-align:start;transition:.15s;font-size:.95rem}
+.opt:hover{border-color:var(--teal)}
+.opt.right{background:#e4f8ec;border-color:var(--green)}
+.opt.wrong{background:#fdecea;border-color:var(--coral)}
+.q-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-weight:900}
+
+/* memory */
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:440px;margin:0 auto}
+.mcard{aspect-ratio:1;background:var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:transform .2s;user-select:none;box-shadow:0 6px 16px rgba(18,38,44,.15)}
+.mcard:hover{transform:scale(1.04)}
+.mcard.flip{background:#fff;box-shadow:inset 0 0 0 2.5px var(--teal)}
+.mcard.won{background:var(--yellow);box-shadow:none;cursor:default}
+.mcard .face{display:none}
+.mcard.flip .face,.mcard.won .face{display:block}
+.mcard .back{color:var(--yellow);font-size:1.3rem}
+.mcard.flip .back,.mcard.won .back{display:none}
+
+.win-msg{text-align:center;font-weight:900;font-size:1.1rem;margin-top:16px;color:var(--green);display:none}
+footer{text-align:center;color:var(--soft);font-weight:700;font-size:.85rem;padding:30px 0 40px}
+footer a{color:var(--teal);font-weight:900;text-decoration:none}
+
+/* floating skate icons in the background */
+.float-bg{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.float-bg span{position:absolute;font-size:2rem;opacity:.09;animation:floaty 14s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-46px) rotate(10deg)}}
+
+/* custom cursor */
+#curDot{position:fixed;pointer-events:none;z-index:998;font-size:26px;transform:translate(-40%,-60%) rotate(-18deg);transition:transform .18s;filter:drop-shadow(0 3px 6px rgba(18,38,44,.3))}
+#curDot.hot{transform:translate(-40%,-60%) rotate(8deg) scale(1.45)}
+@media (hover:none),(max-width:900px){#curDot{display:none}}
+
+/* tab hover pop */
+.tab.on{box-shadow:0 10px 26px rgba(18,38,44,.25)}
+</style>
+</head>
+<body>
+
+<div class="float-bg">
+  <span style="top:12%;left:6%">🛹</span>
+  <span style="top:30%;left:88%;animation-delay:-4s">🛼</span>
+  <span style="top:64%;left:10%;animation-delay:-8s">⛑️</span>
+  <span style="top:78%;left:82%;animation-delay:-2s">🏆</span>
+  <span style="top:48%;left:48%;animation-delay:-6s;font-size:3rem">🛹</span>
+</div>
+<div id="curDot">🛼</div>
+
+<header>
+  <div class="head-in">
+    <div class="logo"><span class="dot"></span>EGY SKATEPARK · <span data-i18n="games">GAMES</span></div>
+    <div class="row">
+      <button class="btn btn-ghost" id="langBtn" onclick="toggleLang()">العربية</button>
+      <a class="btn btn-y" href="index.html" data-i18n="back">🛹 Back to site</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero-g">
+    <h1 data-i18n-html="h1">Play. Score. <span class="yline">Win at the park.</span></h1>
+    <p data-i18n="sub">Beat the weekly top score and your name goes on the Wall of Fame 🏆</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="goTab(0,this)">🛹 <span data-i18n="t1">Skate Runner</span></button>
+    <button class="tab" onclick="goTab(1,this)">🎡 <span data-i18n="t2">Spin & Win</span></button>
+    <button class="tab" onclick="goTab(2,this)">🧠 <span data-i18n="t3">Trick Quiz</span></button>
+    <button class="tab" onclick="goTab(3,this)">🃏 <span data-i18n="t4">Memory</span></button>
+  </div>
+
+  <!-- ================= RUNNER ================= -->
+  <div class="game on" id="g0">
+    <h2 data-i18n="r_t">Skate Runner 🛹</h2>
+    <div class="sub" data-i18n="r_s">Jump the cones and rails — tap the screen or press SPACE. Double-tap = double jump!</div>
+    <div class="score-row">
+      <div class="sc"><span data-i18n="score">Score</span>: <b id="runScore">0</b></div>
+      <div class="sc best"><span data-i18n="best">Your best</span>: <b id="runBest">0</b></div>
+    </div>
+    <canvas id="runCanvas" width="900" height="300"></canvas>
+    <div class="hint-line" data-i18n="r_hint">📸 Screenshot your best score, post it and tag @egyskatepark — top score of the week wins a free session!</div>
+  </div>
+
+  <!-- ================= WHEEL ================= -->
+  <div class="game" id="g1">
+    <h2 data-i18n="w_t">Spin & Win 🎡</h2>
+    <div class="sub" data-i18n="w_s">One free spin every day. Win a prize? Show the code at the desk TODAY to claim it.</div>
+    <div class="wheel-wrap">
+      <div class="wheel-box">
+        <span class="pointer">🔻</span>
+        <canvas id="wheelCanvas" width="360" height="360"></canvas>
+      </div>
+      <div>
+        <div class="prize-box" id="prizeBox">
+          <b data-i18n="w_ready">Feeling lucky? 🍀</b>
+          <span class="small" data-i18n="w_ready2">Spin once a day — prizes are real!</span>
+        </div>
+        <button class="btn btn-y" id="spinBtn" onclick="spin()" style="width:100%;margin-top:14px;font-size:1rem;padding:14px" data-i18n="w_btn">🎡 SPIN!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= QUIZ ================= -->
+  <div class="game" id="g2">
+    <h2 data-i18n="q_t">Trick Quiz 🧠</h2>
+    <div class="sub" data-i18n="q_s">10 questions — how much of a skater are you really?</div>
+    <div class="q-card" id="quizBox"></div>
+    <div class="q-foot">
+      <span><span data-i18n="score">Score</span>: <b id="qScore">0</b>/10</span>
+      <button class="btn btn-y" onclick="startQuiz()" data-i18n="q_restart">↻ Restart</button>
+    </div>
+  </div>
+
+  <!-- ================= MEMORY ================= -->
+  <div class="game" id="g3">
+    <h2 data-i18n="m_t">Skate Memory 🃏</h2>
+    <div class="sub" data-i18n="m_s">Find all the pairs — how few moves can you do it in?</div>
+    <div class="score-row">
+      <div class="sc"><span data-i18n="moves">Moves</span>: <b id="memMoves">0</b></div>
+      <div class="sc best"><span data-i18n="best">Your best</span>: <b id="memBest">—</b></div>
+      <button class="btn btn-y btn-sm" onclick="startMem()" style="margin-inline-start:auto" data-i18n="m_new">↻ New game</button>
+    </div>
+    <div class="mem-grid" id="memGrid"></div>
+    <div class="win-msg" id="memWin"></div>
+  </div>
+
+  <footer>
+    <span data-i18n="foot">Made with ❤️ by Egy Skatepark — first professional skatepark in Egypt</span> ·
+    <a href="index.html" data-i18n="book">Book a session 🛹</a>
+  </footer>
+</div>
+
+<script>
+/* ============ CONFIG — EDIT PRIZES HERE ============ */
+const WHEEL_PRIZES = [
+  {en:"Free drink",        ar:"مشروب ببلاش",           icon:"☕", win:true,  color:"#0e8b9c"},
+  {en:"Try again",         ar:"حاول تاني",             icon:"🛹", win:false, color:"#1d3640"},
+  {en:"10% off session",   ar:"خصم ١٠٪ عالسيشن",       icon:"🎫", win:true,  color:"#e8a800"},
+  {en:"Try tomorrow",      ar:"حاول بكرة",             icon:"🛼", win:false, color:"#1d3640"},
+  {en:"Free sticker",      ar:"ستيكر ببلاش",           icon:"🔥", win:true,  color:"#ff5c39"},
+  {en:"Try again",         ar:"حاول تاني",             icon:"🛹", win:false, color:"#1d3640"},
+  {en:"+15 min free play", ar:"+ربع ساعة لعب حر",      icon:"⏱️", win:true,  color:"#1fb757"},
+  {en:"Next time",         ar:"المرة الجاية",          icon:"🛼", win:false, color:"#1d3640"},
+];
+/* =================================================== */
+
+const i18n={
+en:{games:"GAMES",back:"🛹 Back to site",
+h1:'Play. Score. <span class="yline">Win at the park.</span>',
+sub:"Beat the weekly top score and your name goes on the Wall of Fame 🏆",
+t1:"Skate Runner",t2:"Spin & Win",t3:"Trick Quiz",t4:"Memory",
+score:"Score",best:"Your best",moves:"Moves",
+r_t:"Skate Runner 🛹",r_s:"Jump the cones and rails — tap the screen or press SPACE. Double-tap = double jump!",
+r_hint:"📸 Screenshot your best score, post it and tag @egyskatepark — top score of the week wins a free session!",
+r_go:"TAP TO START",r_over:"WIPEOUT! 😵 Tap to try again",
+w_t:"Spin & Win 🎡",w_s:"One free spin every day. Win a prize? Show the code at the desk TODAY to claim it.",
+w_ready:"Feeling lucky? 🍀",w_ready2:"Spin once a day — prizes are real!",w_btn:"🎡 SPIN!",
+w_won:"You won:",w_lost:"So close! Come back tomorrow 🌙",w_code:"Show this code at the desk today:",
+w_wait:"You spun today already — come back tomorrow! 🌙",
+q_t:"Trick Quiz 🧠",q_s:"10 questions — how much of a skater are you really?",q_restart:"↻ Restart",
+q_done:"Quiz done! Your level:",
+q_lv1:"🐣 Fresh Rookie — time for your first session!",q_lv2:"🛹 Park Regular — not bad at all!",q_lv3:"🔥 Street Legend — respect!",
+m_t:"Skate Memory 🃏",m_s:"Find all the pairs — how few moves can you do it in?",m_new:"↻ New game",
+m_win:"🎉 You did it in {n} moves!",
+foot:"Made with ❤️ by Egy Skatepark — first professional skatepark in Egypt",book:"Book a session 🛹"},
+ar:{games:"الألعاب",back:"🛹 ارجع للموقع",
+h1:'العب. سجّل. <span class="yline">اكسب في الپارك.</span>',
+sub:"اكسر أعلى رقم في الأسبوع واسمك يتحط على حيطة الأبطال 🏆",
+t1:"سكيت رَنر",t2:"عجلة الحظ",t3:"كويز الترِكس",t4:"الذاكرة",
+score:"النقاط",best:"أحسن رقم ليك",moves:"حركات",
+r_t:"سكيت رَنر 🛹",r_s:"انط فوق الأقماع والرايلز — دوس على الشاشة أو SPACE. دوستين = نطة دوبل!",
+r_hint:"📸 صوّر أحسن سكور ليك وانشره واعمل تاج لـ @egyskatepark — أعلى سكور في الأسبوع ياخد سيشن ببلاش!",
+r_go:"دوس عشان تبدأ",r_over:"وقعت! 😵 دوس تاني وحاول",
+w_t:"عجلة الحظ 🎡",w_s:"لفة واحدة ببلاش كل يوم. كسبت؟ ورّي الكود على الديسك النهارده وخد جايزتك.",
+w_ready:"حاسس إنك محظوظ؟ 🍀",w_ready2:"لفة كل يوم — والجوايز حقيقية!",w_btn:"🎡 لِف!",
+w_won:"كسبت:",w_lost:"قربت! ارجع بكرة 🌙",w_code:"ورّي الكود ده على الديسك النهارده:",
+w_wait:"إنت لفيت النهارده خلاص — ارجع بكرة! 🌙",
+q_t:"كويز الترِكس 🧠",q_s:"١٠ أسئلة — إنت سكيتر بجد ولا لسه؟",q_restart:"↻ من الأول",
+q_done:"خلص الكويز! مستواك:",
+q_lv1:"🐣 مبتدئ طازة — جرب أول سيشن!",q_lv2:"🛹 من رواد الپارك — مش بطال خالص!",q_lv3:"🔥 أسطورة ستريت — ريسبكت!",
+m_t:"ذاكرة السكيت 🃏",m_s:"لاقي كل الأزواج — تقدر تخلصها في كام حركة؟",m_new:"↻ لعبة جديدة",
+m_win:"🎉 خلصتها في {n} حركة!",
+foot:"معمول بـ ❤️ من إيجي سكيت بارك — أول سكيت بارك احترافي في مصر",book:"احجز سيشن 🛹"}
+};
+let lang=localStorage.getItem("espg_lang")||"ar";
+const T=k=>i18n[lang][k]||k;
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  document.getElementById("langBtn").textContent=lang==="ar"?"English":"العربية";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.getAttribute("data-i18n");if(i18n[lang][k])el.textContent=i18n[lang][k]});
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{const k=el.getAttribute("data-i18n-html");if(i18n[lang][k])el.innerHTML=i18n[lang][k]});
+  drawWheel();startQuiz();
+}
+function toggleLang(){lang=lang==="en"?"ar":"en";localStorage.setItem("espg_lang",lang);applyLang()}
+function goTab(i,btn){
+  document.querySelectorAll(".game").forEach(g=>g.classList.remove("on"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("on"));
+  document.getElementById("g"+i).classList.add("on");btn.classList.add("on");
+}
+
+/* ================= 1. SKATE RUNNER ================= */
+const cv=document.getElementById("runCanvas"),cx=cv.getContext("2d");
+let R={on:false,over:false,score:0,speed:5,t:0,y:0,vy:0,jumps:0,obs:[],clouds:[{x:150,y:50},{x:500,y:80},{x:750,y:40}]};
+const GROUND=235, best=+localStorage.getItem("espg_runbest")||0;
+document.getElementById("runBest").textContent=best;
+function runReset(){R={on:true,over:false,score:0,speed:5,t:0,y:0,vy:0,jumps:0,obs:[],clouds:R.clouds}}
+function jump(){
+  if(!R.on||R.over){runReset();return}
+  if(R.jumps<2){R.vy=-11.5;R.jumps++}
+}
+cv.addEventListener("pointerdown",e=>{e.preventDefault();jump()});
+addEventListener("keydown",e=>{if(e.code==="Space"&&document.getElementById("g0").classList.contains("on")){e.preventDefault();jump()}});
+function drawSkater(x,y){
+  cx.save();cx.translate(x,y);
+  /* board */
+  cx.fillStyle="#12262c";cx.fillRect(-16,-6,32,5);
+  cx.fillStyle="#ff5c39";cx.beginPath();cx.arc(-9,0,4,0,7);cx.arc(9,0,4,0,7);cx.fill();
+  /* body */
+  cx.strokeStyle="#12262c";cx.lineWidth=3.4;cx.lineCap="round";
+  cx.beginPath();cx.moveTo(-6,-8);cx.lineTo(-3,-22);cx.lineTo(6,-8);cx.stroke();          /* legs */
+  cx.beginPath();cx.moveTo(-3,-22);cx.lineTo(0,-38);cx.stroke();                          /* torso */
+  cx.beginPath();cx.moveTo(0,-34);cx.lineTo(12,-28);cx.stroke();                          /* arm */
+  cx.beginPath();cx.moveTo(0,-34);cx.lineTo(-11,-40);cx.stroke();                         /* arm2 */
+  cx.fillStyle="#0e8b9c";cx.beginPath();cx.arc(1,-45,7,0,7);cx.fill();                    /* head */
+  cx.fillStyle="#ffc933";cx.fillRect(-6,-52,14,4);                                        /* cap */
+  cx.restore();
+}
+/* parallax skyline (October buildings + palms) & dust particles */
+let SKY=[],PALMS=[],DUST=[];
+for(let x=0;x<1000;x+=90)SKY.push({x,w:50+Math.random()*40,h:40+Math.random()*55});
+for(let x=40;x<1000;x+=170)PALMS.push({x:x+Math.random()*60});
+function dustBurst(x,y){for(let i=0;i<10;i++)DUST.push({x,y,vx:(Math.random()-.5)*3,vy:-Math.random()*2.5,life:22})}
+function runLoop(){
+  requestAnimationFrame(runLoop);
+  cx.clearRect(0,0,900,300);
+  /* parallax skyline */
+  cx.fillStyle="rgba(94,124,138,.28)";
+  SKY.forEach(b=>{
+    cx.fillRect(b.x,GROUND+22-b.h,b.w,b.h);
+    if(R.on)b.x-=R.speed*.25; if(b.x<-b.w)b.x=940;
+  });
+  /* palms */
+  cx.font="26px serif";
+  PALMS.forEach(p=>{
+    cx.fillText("🌴",p.x,GROUND+18);
+    if(R.on)p.x-=R.speed*.5; if(p.x<-30)p.x=940;
+  });
+  /* sky deco */
+  cx.fillStyle="rgba(255,255,255,.8)";
+  R.clouds.forEach(c=>{cx.beginPath();cx.arc(c.x,c.y,16,0,7);cx.arc(c.x+18,c.y+4,12,0,7);cx.fill();c.x-=.4;if(c.x<-40)c.x=940});
+  /* ground line + park yellow line */
+  cx.fillStyle="#ffc933";cx.fillRect(0,GROUND+22,900,5);
+  /* dust */
+  DUST.forEach(d=>{d.x+=d.vx;d.y+=d.vy;d.vy+=.15;d.life--;
+    cx.fillStyle=`rgba(140,160,170,${d.life/22})`;cx.beginPath();cx.arc(d.x,d.y,2.4,0,7);cx.fill()});
+  DUST=DUST.filter(d=>d.life>0);
+  if(!R.on){
+    cx.fillStyle="#12262c";cx.font="900 30px Space Grotesk, Cairo";cx.textAlign="center";
+    cx.fillText(R.over?T("r_over"):T("r_go"),450,120);
+    drawSkater(120,GROUND+16);
+    return;
+  }
+  R.t++;R.score=Math.floor(R.t/5);R.speed=5+R.t/900;
+  document.getElementById("runScore").textContent=R.score;
+  /* spawn obstacles */
+  if(R.t%Math.max(46,90-Math.floor(R.t/120))===0){
+    const type=Math.random()<.6?"cone":"rail";
+    R.obs.push({x:940,type,w:type==="cone"?22:56,h:type==="cone"?26:18});
+  }
+  /* physics */
+  const wasAir=R.y<0;
+  R.vy+=.62;R.y+=R.vy;
+  if(R.y>0){R.y=0;R.vy=0;R.jumps=0;if(wasAir)dustBurst(120,GROUND+18)}
+  const sy=GROUND+16+R.y;
+  drawSkater(120,sy);
+  /* obstacles */
+  R.obs.forEach(o=>{
+    o.x-=R.speed;
+    if(o.type==="cone"){
+      cx.fillStyle="#ff5c39";cx.beginPath();cx.moveTo(o.x,GROUND+22);cx.lineTo(o.x+11,GROUND+22-o.h);cx.lineTo(o.x+22,GROUND+22);cx.fill();
+      cx.fillStyle="#fff";cx.fillRect(o.x+4,GROUND+10,14,4);
+    }else{
+      cx.fillStyle="#0e8b9c";cx.fillRect(o.x,GROUND+22-o.h,o.w,5);
+      cx.fillRect(o.x+4,GROUND+22-o.h,4,o.h);cx.fillRect(o.x+o.w-8,GROUND+22-o.h,4,o.h);
+    }
+  });
+  R.obs=R.obs.filter(o=>o.x>-70);
+  /* collision */
+  R.obs.forEach(o=>{
+    const skL=106,skR=134,skB=sy;
+    if(o.x<skR&&o.x+o.w>skL&&skB>GROUND+22-o.h-2){
+      R.on=false;R.over=true;
+      const b=+localStorage.getItem("espg_runbest")||0;
+      if(R.score>b){
+        localStorage.setItem("espg_runbest",R.score);
+        document.getElementById("runBest").textContent=R.score;
+        if(typeof confetti==="function")confetti({particleCount:90,spread:70,origin:{y:.5},colors:["#ffc933","#0e8b9c","#ff5c39"]});
+      }
+    }
+  });
+}
+runLoop();
+
+/* ================= 2. WHEEL ================= */
+const wc=document.getElementById("wheelCanvas"),wx=wc.getContext("2d");
+let wheelAngle=0,spinning=false;
+function drawWheel(){
+  /* designed like a real skateboard wheel: tire ring, segments, bolted hub */
+  const n=WHEEL_PRIZES.length,seg=Math.PI*2/n,Rr=150;
+  wx.clearRect(0,0,360,360);
+  wx.save();wx.translate(180,180);wx.rotate(wheelAngle);
+  /* outer tire */
+  wx.beginPath();wx.arc(0,0,172,0,7);wx.fillStyle="#12262c";wx.fill();
+  wx.beginPath();wx.arc(0,0,160,0,7);wx.fillStyle="#ffc933";wx.fill();
+  /* grip marks on the tire */
+  for(let i=0;i<32;i++){
+    wx.save();wx.rotate(i*Math.PI/16);
+    wx.fillStyle="#12262c";wx.fillRect(-2,-171,4,8);
+    wx.restore();
+  }
+  /* prize segments */
+  WHEEL_PRIZES.forEach((p,i)=>{
+    wx.beginPath();wx.moveTo(0,0);wx.arc(0,0,Rr,i*seg,(i+1)*seg);wx.closePath();
+    wx.fillStyle=p.color;wx.fill();
+    wx.strokeStyle="rgba(255,255,255,.35)";wx.lineWidth=2;wx.stroke();
+    wx.save();wx.rotate(i*seg+seg/2);
+    /* icon near the rim */
+    wx.font="22px Cairo";wx.textAlign="center";wx.fillText(p.icon,Rr-26,8);
+    /* label */
+    wx.fillStyle="#fff";wx.font="900 12px Cairo";wx.textAlign="end";
+    const label=(lang==="ar"?p.ar:p.en);
+    wx.fillText(label.length>15?label.slice(0,14)+"…":label,Rr-46,4);
+    wx.restore();
+  });
+  /* hub like a skate wheel: bearing ring + bolts */
+  wx.beginPath();wx.arc(0,0,46,0,7);wx.fillStyle="#e9eef0";wx.fill();
+  wx.beginPath();wx.arc(0,0,46,0,7);wx.lineWidth=5;wx.strokeStyle="#c3ced4";wx.stroke();
+  for(let i=0;i<8;i++){
+    wx.save();wx.rotate(i*Math.PI/4);
+    wx.beginPath();wx.arc(0,-36,4.5,0,7);wx.fillStyle="#8fa1a9";wx.fill();
+    wx.restore();
+  }
+  wx.beginPath();wx.arc(0,0,26,0,7);wx.fillStyle="#12262c";wx.fill();
+  wx.font="900 20px Cairo";wx.textAlign="center";wx.fillStyle="#ffc933";wx.fillText("🛹",0,7);
+  wx.restore();
+}
+function spin(){
+  if(spinning)return;
+  const today=new Date().toISOString().split("T")[0];
+  if(localStorage.getItem("espg_spin")===today){
+    document.getElementById("prizeBox").innerHTML=`<b>${T("w_wait")}</b>`;return;
+  }
+  spinning=true;
+  const n=WHEEL_PRIZES.length,target=Math.floor(Math.random()*n);
+  const seg=Math.PI*2/n;
+  const final=Math.PI*2*6+(Math.PI*1.5-(target*seg+seg/2));
+  const dur=4200,start=performance.now(),from=wheelAngle%(Math.PI*2);
+  function anim(t){
+    const p=Math.min(1,(t-start)/dur),e=1-Math.pow(1-p,4);
+    wheelAngle=from+(final-from)*e;
+    drawWheel();
+    if(p<1)requestAnimationFrame(anim);
+    else{
+      spinning=false;
+      localStorage.setItem("espg_spin",today);
+      const prize=WHEEL_PRIZES[target],box=document.getElementById("prizeBox");
+      if(prize.win){
+        const code="ESP-"+today.replace(/-/g,"").slice(4)+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
+        box.innerHTML=`<b>🎉 ${T("w_won")} ${prize.icon} ${lang==="ar"?prize.ar:prize.en}</b>
+        <span class="small">${T("w_code")}</span><span class="code">${code}</span>`;
+        if(typeof confetti==="function"){
+          confetti({particleCount:130,spread:85,origin:{y:.55},colors:["#ffc933","#0e8b9c","#ff5c39","#fff"]});
+          setTimeout(()=>confetti({particleCount:70,angle:120,spread:55,origin:{x:.8,y:.6}}),300);
+        }
+      }else{
+        box.innerHTML=`<b>${T("w_lost")}</b>`;
+      }
+    }
+  }
+  requestAnimationFrame(anim);
+}
+drawWheel();
+
+/* ================= 3. QUIZ ================= */
+const QUIZ=[
+{q_en:"What's the most basic skateboard jump called?",q_ar:"إيه اسم أشهر نطة أساسية في السكيت؟",a:["Ollie","Kickflip","360 Spin"],a_ar:["أولي","كيك فليب","لفة ٣٦٠"],c:0},
+{q_en:"What must EVERY skater wear at Egy Skatepark?",q_ar:"إيه اللي لازم كل متزلج يلبسه في إيجي سكيت بارك؟",a:["A cap","Helmet & pads","Sunglasses"],a_ar:["كاب","خوذة وواقيات","نضارة شمس"],c:1},
+{q_en:"Sliding along a rail with your board is called…",q_ar:"لما تنزلق على الرايل بالبورد اسمها…",a:["A grind","A slide-jump","Surfing"],a_ar:["جرايند","نطة انزلاقية","سيرفنج"],c:0},
+{q_en:"Riding with your right foot forward is called…",q_ar:"لما تركب ورجلك اليمين قدام اسمها…",a:["Wrong-foot","Goofy","Crazy stance"],a_ar:["ركوب غلط","جوفي","وقفة مجنونة"],c:1},
+{q_en:"What's the curved part of a skatepark called?",q_ar:"الجزء المنحني في السكيت بارك اسمه إيه؟",a:["The wave","The bowl","The bathtub"],a_ar:["الموجة","الـبول (bowl)","البانيو"],c:1},
+{q_en:"The first thing coaches teach at Egy Skatepark:",q_ar:"أول حاجة المدربين بيعلموها في إيجي سكيت بارك:",a:["How to fall safely","Jumping stairs","Racing"],a_ar:["إزاي تقع صح","نط السلالم","السباقات"],c:0},
+{q_en:"Flipping the board with your foot mid-air is a…",q_ar:"لما تلف البورد برجلك في الهوا اسمها…",a:["Kickflip","Foot-spin","Air-roll"],a_ar:["كيك فليب","لفة رجل","لفة هوا"],c:0},
+{q_en:"From what age can kids train at Egy Skatepark?",q_ar:"الأطفال يقدروا يتدربوا في إيجي سكيت بارك من سن كام؟",a:["From 10","From 4","From 15"],a_ar:["من ١٠ سنين","من ٤ سنين","من ١٥ سنة"],c:1},
+{q_en:"Roller skating with one boot per foot & 4 wheels is…",q_ar:"التزلج ببوت في كل رجل و٤ عجلات اسمه…",a:["Roller skate","Ice skate","Scooter"],a_ar:["رولر سكيت","تزلج على الجليد","سكوتر"],c:0},
+{q_en:"How long is a training session at the park?",q_ar:"السيشن في الپارك مدته قد إيه؟",a:["30 min","60 min + 15 free play","3 hours"],a_ar:["نص ساعة","ساعة + ربع ساعة لعب حر","٣ ساعات"],c:1},
+];
+let qi=0,qs=0;
+function startQuiz(){qi=0;qs=0;document.getElementById("qScore").textContent=0;showQ()}
+function showQ(){
+  const box=document.getElementById("quizBox");
+  if(qi>=QUIZ.length){
+    const lv=qs<=4?T("q_lv1"):qs<=7?T("q_lv2"):T("q_lv3");
+    box.innerHTML=`<h3>${T("q_done")} ${qs}/10</h3><div style="font-size:1.3rem;font-weight:900">${lv}</div>`;
+    return;
+  }
+  const q=QUIZ[qi];
+  box.innerHTML=`<h3>${qi+1}. ${lang==="ar"?q.q_ar:q.q_en}</h3>
+  <div class="opts">${(lang==="ar"?q.a_ar:q.a).map((o,i)=>`<button class="opt" onclick="answer(${i},this)">${o}</button>`).join("")}</div>`;
+}
+function answer(i,btn){
+  const q=QUIZ[qi];
+  document.querySelectorAll(".opt").forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add("right")});
+  if(i===q.c){qs++;document.getElementById("qScore").textContent=qs}
+  else btn.classList.add("wrong");
+  setTimeout(()=>{qi++;showQ()},900);
+}
+
+/* ================= 4. MEMORY ================= */
+const EMO=["🛹","🛼","🦺","⛑️","🏆","🧢","👟","🌙"];
+let mFirst=null,mLock=false,mMoves=0,mFound=0;
+function startMem(){
+  mFirst=null;mLock=false;mMoves=0;mFound=0;
+  document.getElementById("memMoves").textContent=0;
+  document.getElementById("memWin").style.display="none";
+  const deck=[...EMO,...EMO].sort(()=>Math.random()-.5);
+  document.getElementById("memGrid").innerHTML=deck.map((e,i)=>
+    `<div class="mcard" data-e="${e}" onclick="flip(this)"><span class="back">⭐</span><span class="face">${e}</span></div>`).join("");
+  const b=localStorage.getItem("espg_membest");
+  document.getElementById("memBest").textContent=b||"—";
+}
+function flip(card){
+  if(mLock||card.classList.contains("flip")||card.classList.contains("won"))return;
+  card.classList.add("flip");
+  if(!mFirst){mFirst=card;return}
+  mMoves++;document.getElementById("memMoves").textContent=mMoves;
+  if(mFirst.dataset.e===card.dataset.e){
+    mFirst.classList.add("won");card.classList.add("won");
+    mFirst.classList.remove("flip");card.classList.remove("flip");
+    mFirst=null;mFound++;
+    if(mFound===EMO.length){
+      const w=document.getElementById("memWin");
+      w.textContent=T("m_win").replace("{n}",mMoves);w.style.display="block";
+      if(typeof confetti==="function")confetti({particleCount:100,spread:80,origin:{y:.6},colors:["#ffc933","#0e8b9c","#1fb757"]});
+      const b=+localStorage.getItem("espg_membest")||999;
+      if(mMoves<b){localStorage.setItem("espg_membest",mMoves);document.getElementById("memBest").textContent=mMoves}
+    }
+  }else{
+    mLock=true;
+    setTimeout(()=>{mFirst.classList.remove("flip");card.classList.remove("flip");mFirst=null;mLock=false},750);
+  }
+}
+
+/* custom cursor */
+if(matchMedia("(hover:hover)").matches){
+  const d=document.getElementById("curDot");
+  addEventListener("mousemove",e=>{d.style.left=e.clientX+"px";d.style.top=e.clientY+"px"});
+  document.querySelectorAll("a,button,.mcard,.opt,.tab").forEach(el=>{
+    el.addEventListener("mouseenter",()=>d.classList.add("hot"));
+    el.addEventListener("mouseleave",()=>d.classList.remove("hot"));
+  });
+}
+
+/* init */
+applyLang();startMem();
+</script>
+</body>
+</html>

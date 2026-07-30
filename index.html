@@ -1184,8 +1184,16 @@ addEventListener("scroll",()=>nav.classList.toggle("solid",scrollY>60),{passive:
 /* reveal */
 const io = new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target); }
-}),{threshold:.12});
+}),{threshold:.05});
 document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+/* safety net: never let content stay hidden (fast scrolls, odd browsers) */
+function rvSafety(){
+  document.querySelectorAll(".rv:not(.on)").forEach(el=>{
+    if(el.getBoundingClientRect().top < innerHeight*0.98) el.classList.add("on");
+  });
+}
+addEventListener("scroll",rvSafety,{passive:true});
+setInterval(rvSafety,700);
 
 /* counters */
 const cio = new IntersectionObserver(es=>es.forEach(e=>{

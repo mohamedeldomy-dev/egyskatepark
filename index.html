@@ -857,6 +857,7 @@ html[dir="rtl"] .zizo-txt h3{font-family:'Lalezar','Cairo',sans-serif;font-weigh
             </select>
           </div>
         </div>
+        <div class="field" id="sbNote" style="display:none;background:#fff5d6;border:2px solid var(--yellow);border-radius:13px;padding:14px 16px;font-weight:800;font-size:.88rem" data-i18n="sb_note">🛹 Skateboard has one dedicated coach — choose your preferred time and we'll agree the final time with the coach on WhatsApp before confirming.</div>
         <div class="field">
           <label data-i18n="fl_pkg">Training package</label>
           <select id="bPackage">
@@ -876,7 +877,7 @@ html[dir="rtl"] .zizo-txt h3{font-family:'Lalezar','Cairo',sans-serif;font-weigh
             <select id="bTime">
               <option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option>
               <option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option>
-              <option>10:00 PM</option>
+              <option>10:00 PM</option><option value="Flexible" data-i18n="o_flex">Flexible — any time works</option>
             </select>
           </div>
         </div>
@@ -900,7 +901,7 @@ html[dir="rtl"] .zizo-txt h3{font-family:'Lalezar','Cairo',sans-serif;font-weigh
             <div class="rows" id="tRows"></div>
             <a class="btn btn-wa" id="waBtn" target="_blank" data-i18n="ps_wa">Confirm on WhatsApp ✅</a>
           </div>
-          <div class="fine" data-i18n="ps_fine">Screenshot this pass and show the QR to your coach. Confirmed once we reply on WhatsApp — final time depends on age & level grouping.</div>
+          <div class="fine" id="passFine" data-i18n="ps_fine">Screenshot this pass and show the QR to your coach. Confirmed once we reply on WhatsApp — final time depends on age & level grouping.</div>
         </div>
       </div>
     </div>
@@ -1062,7 +1063,11 @@ en:{
   bk_btn:"Book My Session 🛹",
   ps_empty:"Your session pass appears here — send it on WhatsApp and we'll confirm your coach & time.",
   ps_type:"SESSION PASS",ps_wa:"Confirm on WhatsApp ✅",
-  ps_fine:"Screenshot this pass and show the QR to your coach. Confirmed once we reply on WhatsApp — final time depends on age & level grouping.",
+  ps_fine:"Screenshot this pass and show the QR to your coach. Your hour is CONFIRMED once we reply on WhatsApp — if anything changes, we sort it there.",
+  ps_fine_sb:"🛹 Skateboard: we'll agree the exact time with the coach on WhatsApp FIRST, then confirm your session. Send the pass now and we'll take it from there.",
+  sb_note:"🛹 Skateboard has one dedicated coach — choose your preferred time and we'll agree the final time with the coach on WhatsApp before confirming.",
+  o_flex:"Flexible — any time works",
+  wa_sb:"time to be coordinated with the coach first",
   lc_k:"Come through",lc_t:"Find us in October",
   lc_a:"Address",lc_av:"Waslet Dahshour Rd — touristic walkway & Water Park, near Juhayna Square, 6th of October",
   lc_h:"Hours",lc_hv:"Park daily 2 PM – 1 AM · Training 4 – 11 PM",lc_p:"WhatsApp",lc_i:"Instagram",
@@ -1136,7 +1141,11 @@ ar:{
   bk_btn:"احجز السيشن 🛹",
   ps_empty:"باس السيشن هيظهر هنا — ابعته على واتساب وهنأكدلك المدرب والميعاد.",
   ps_type:"باس السيشن",ps_wa:"أكّد على واتساب ✅",
-  ps_fine:"خد سكرين شوت وورّي الـ QR للمدرب. بيتأكد لما نرد عليك — الميعاد النهائي حسب السن والمستوى.",
+  ps_fine:"خد سكرين شوت وورّي الـ QR للمدرب. ساعتك بتتأكد لما نرد عليك على واتساب — ولو حصل أي ظرف بنظبطها هناك.",
+  ps_fine_sb:"🛹 السكيت بورد: بنتفق على الميعاد بالظبط مع المدرب على واتساب الأول، وبعدين نأكد السيشن. ابعت الباس دلوقتي وإحنا نكمل.",
+  sb_note:"🛹 السكيت بورد ليه مدرب واحد متخصص — اختار الوقت اللي يناسبك وهنتفق على الميعاد النهائي مع المدرب على واتساب قبل التأكيد.",
+  o_flex:"مرن — أي وقت يناسبني",
+  wa_sb:"الميعاد بيتظبط مع المدرب الأول",
   lc_k:"تعالى شوفنا",lc_t:"مكاننا في أكتوبر",
   lc_a:"العنوان",lc_av:"طريق وصلة دهشور — الممشى السياحي والووتر بارك، قرب ميدان جهينة، السادس من أكتوبر",
   lc_h:"المواعيد",lc_hv:"الپارك يوميًا ٢ ظهرًا – ١ صباحًا · التدريب ٤ – ١١ مساءً",lc_p:"واتساب",lc_i:"انستجرام",
@@ -1207,6 +1216,10 @@ document.querySelectorAll("[data-count]").forEach(el=>cio.observe(el));
 
 /* booking */
 function preselect(i){ document.getElementById("bPackage").selectedIndex = i; }
+/* skateboard = 1 coach → time is coordinated on WhatsApp before confirming */
+document.getElementById("bActivity").addEventListener("change",function(){
+  document.getElementById("sbNote").style.display = this.value==="Skateboard" ? "block" : "none";
+});
 function makeTicket(e){
   e.preventDefault();
   const t = i18n[lang];
@@ -1214,6 +1227,7 @@ function makeTicket(e){
   const phone = document.getElementById("bPhone").value.trim();
   const age = document.getElementById("bAge").value;
   const act = document.getElementById("bActivity").value;
+  const isSB = act==="Skateboard";
   const lvl = document.getElementById("bLevel").value;
   const pkg = document.getElementById("bPackage").value;
   const date = document.getElementById("bDate").value;
@@ -1247,7 +1261,7 @@ Date: ${date} ${time}`;
      <div><span>${t.d_date}</span><b>${date} — ${time}</b></div>`;
 
   const waText = encodeURIComponent(
-`🛹 ${t.wa_msg}
+`${isSB?"🛹⚠️ SKATEBOARD — "+t.wa_sb+"\n":""}🛹 ${t.wa_msg}
 🎟️ ${tid}
 👤 ${name} (${age})
 📱 ${phone}
@@ -1256,6 +1270,7 @@ Date: ${date} ${time}`;
 📅 ${date} ${time}${notes?"\n📝 "+notes:""}`);
   document.getElementById("waBtn").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
+  document.getElementById("passFine").textContent = isSB ? t.ps_fine_sb : t.ps_fine;
   document.getElementById("passEmpty").style.display="none";
   const pass=document.getElementById("pass");
   pass.classList.add("show");

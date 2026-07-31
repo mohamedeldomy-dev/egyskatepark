@@ -1863,6 +1863,7 @@ function connectCloud(){
   if(!raw){alert("Paste the Firebase config first — ask Claude to set it up with you!");return}
   let cfg; try{cfg=JSON.parse(raw)}catch(e){alert("This config is not valid JSON");return}
   localStorage.setItem("espdesk_fb",raw);
+  localStorage.removeItem("espdesk_fb_off");
   loadFirebase(cfg);
 }
 function disconnectCloud(){
@@ -1870,6 +1871,7 @@ function disconnectCloud(){
   logEvent("DISCONNECT","system taken offline");
   cloudPushNow();
   localStorage.removeItem("espdesk_fb");
+  localStorage.setItem("espdesk_fb_off","1");
   if(fbUnsub)fbUnsub();
   fb=null;setConn(false);toast(T("tw_disc"));
 }
@@ -1970,7 +1972,9 @@ function refreshAll(){renderToday();renderMembers();renderPay();renderReports()}
 
 /* init */
 document.getElementById("devName").value = localStorage.getItem("espdesk_dev")||"";
-const savedFb=localStorage.getItem("espdesk_fb");
+/* Egy Skatepark cloud — connected automatically on every device */
+const FB_DEFAULT='{"apiKey":"AIzaSyCenc-dRhbBYyT9FYE1eBWvmk90D3Bn_NY","authDomain":"egyskatepark-a6e1d.firebaseapp.com","projectId":"egyskatepark-a6e1d","storageBucket":"egyskatepark-a6e1d.firebasestorage.app","messagingSenderId":"258731888892","appId":"1:258731888892:web:e64c04bf48cd3c54554779"}';
+const savedFb=localStorage.getItem("espdesk_fb")||(localStorage.getItem("espdesk_fb_off")?null:FB_DEFAULT);
 if(savedFb){document.getElementById("fbCfg").value=savedFb;try{loadFirebase(JSON.parse(savedFb))}catch(e){}}
 applyLang();
 </script>

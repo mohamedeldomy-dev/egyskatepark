@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /parkos.html
+Sitemap: https://www.egyskatepark.com/sitemap.xml

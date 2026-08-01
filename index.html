@@ -24,9 +24,24 @@
 "sameAs":["https://www.instagram.com/egyskatepark/","https://www.tiktok.com/@egyskatepark"]}
 </script>
 <link rel="stylesheet" href="/styles.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EW01W6MBHZ"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-EW01W6MBHZ');
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');
+  if(a){gtag('event','whatsapp_click',{link_url:a.href,page:location.pathname});}
+},true);
+</script>
 </head>
 <body>
 <div id="root"></div>
 <script src="/app.js"></script>
+<script>
+(function(){var t=setInterval(function(){var nav=document.querySelector(".world-nav nav");
+if(nav&&!document.getElementById("shopNavLink")){var a=document.createElement("a");
+a.id="shopNavLink";a.href="shop.html";a.textContent=document.documentElement.dir==="rtl"?"المتجر":"SHOP";
+nav.appendChild(a);clearInterval(t);}},700);setTimeout(function(){clearInterval(t)},15000);})();
+</script>
 </body>
 </html>

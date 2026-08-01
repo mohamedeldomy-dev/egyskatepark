@@ -105,6 +105,15 @@ footer a{color:var(--teal);font-weight:900;text-decoration:none}
 /* tab hover pop */
 .tab.on{box-shadow:0 10px 26px rgba(18,38,44,.25)}
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EW01W6MBHZ"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-EW01W6MBHZ');
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');
+  if(a){gtag('event','whatsapp_click',{link_url:a.href,page:location.pathname});}
+},true);
+</script>
 </head>
 <body>
 
@@ -122,7 +131,7 @@ footer a{color:var(--teal);font-weight:900;text-decoration:none}
     <div class="logo"><span class="dot"></span>EGY SKATEPARK · <span data-i18n="games">GAMES</span></div>
     <div class="row">
       <button class="btn btn-ghost" id="langBtn" onclick="toggleLang()">العربية</button>
-      <a class="btn btn-y" href="index.html" data-i18n="back">🛹 Back to site</a>
+      <a class="btn btn-y" href="egyskatepark-website.html" data-i18n="back">🛹 Back to site</a>
     </div>
   </div>
 </header>
@@ -197,7 +206,7 @@ footer a{color:var(--teal);font-weight:900;text-decoration:none}
 
   <footer>
     <span data-i18n="foot">Made with ❤️ by Egy Skatepark — first professional skatepark in Egypt</span> ·
-    <a href="index.html" data-i18n="book">Book a session 🛹</a>
+    <a href="egyskatepark-website.html" data-i18n="book">Book a session 🛹</a>
   </footer>
 </div>
 

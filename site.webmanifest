@@ -1,0 +1,10 @@
+{
+  "name": "Egy Skatepark",
+  "short_name": "Egy Skatepark",
+  "description": "Skateboard and roller classes, all-day entry, rentals and family experiences in 6 October, Giza.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f0e8",
+  "theme_color": "#f4c91d",
+  "icons": [{ "src": "/brand/egy-skatepark-mark.png", "sizes": "512x512", "type": "image/png" }]
+}

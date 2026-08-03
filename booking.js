@@ -21,7 +21,7 @@
     submit: 'جهّز طلب كلاس السكيت',
     roller: 'رولر سكيت', skateboard: 'سكيت بورد',
     lvl: [['Beginner', 'مبتدئ — أول مرة'], ['Intermediate', 'متوسط'], ['Advanced', 'متقدم']],
-    pkgs: [['Single Session (300 EGP)', 'سيشن واحدة — ٣٠٠ جنيه'], ['Group Monthly (650 EGP)', 'جروب — ٦٥٠ جنيه / شهر'], ['Private Group Monthly (750 EGP)', 'جروب برايفت — ٧٥٠ جنيه / شهر'], ['Private 1-on-1 Monthly (1000 EGP)', 'برايفت فردي — ١٬٠٠٠ جنيه / شهر']],
+    pkgs: [['Private Session (300 EGP)', 'سيشن برايفت — ٣٠٠ جنيه'], ['Group Monthly (650 EGP)', 'جروب — ٦٥٠ جنيه / شهر'], ['Private Group Monthly (750 EGP)', 'جروب برايفت — ٧٥٠ جنيه / شهر'], ['Private 1-on-1 Monthly (1000 EGP)', 'برايفت فردي — ١٬٠٠٠ جنيه / شهر']],
     flex: 'وقت مرن — اتفق مع المدرب الأول',
     ruleR: 'حجز الرولر بيتم أونلاين. الفريق بيأكد الساعة النهائية على واتساب.',
     ruleS: 'السكيت بورد له مدرب واحد. اتفق على الميعاد مع المدرب الأول؛ اختار ساعة مفضلة أو اختيار الوقت المرن.',
@@ -45,7 +45,7 @@
     submit: 'Prepare skate class request',
     roller: 'Roller Skate', skateboard: 'Skateboard',
     lvl: [['Beginner', 'Beginner — first time'], ['Intermediate', 'Intermediate'], ['Advanced', 'Advanced']],
-    pkgs: [['Single Session (300 EGP)', 'Single session — 300 EGP'], ['Group Monthly (650 EGP)', 'Group — 650 EGP / month'], ['Private Group Monthly (750 EGP)', 'Private group — 750 EGP / month'], ['Private 1-on-1 Monthly (1000 EGP)', 'Private 1-on-1 — 1000 EGP / month']],
+    pkgs: [['Private Session (300 EGP)', 'Private session — 300 EGP'], ['Group Monthly (650 EGP)', 'Group — 650 EGP / month'], ['Private Group Monthly (750 EGP)', 'Private group — 750 EGP / month'], ['Private 1-on-1 Monthly (1000 EGP)', 'Private 1-on-1 — 1000 EGP / month']],
     flex: 'Flexible — agree time with coach first',
     ruleR: 'Roller booking is completed online. Your exact hour is confirmed by the team on WhatsApp.',
     ruleS: 'Skateboard has one coach. Agree time with coach first; you may select a preferred hour or the flexible-time option.',
@@ -306,3 +306,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+

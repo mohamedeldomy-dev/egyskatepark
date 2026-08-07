@@ -1,0 +1,19 @@
+{
+  "wall": {
+    "mode": "preview",
+    "previewCount": 47312,
+    "functionName": "claimWallTile",
+    "statsFunctionName": "getWallState",
+    "functionsRegion": "europe-west1"
+  },
+  "firebase": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "appId": "",
+    "appCheckSiteKey": ""
+  },
+  "balance": {
+    "nationalAverageEndpoint": ""
+  }
+}

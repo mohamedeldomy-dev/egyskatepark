@@ -307,3 +307,19 @@
   else init();
 })();
 
+/* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */
+(function () {
+  'use strict';
+  function report(u) {
+    if (window.gtag) { try { window.gtag('event', 'whatsapp_click', { link_url: String(u).slice(0, 200), page: location.pathname, via: 'js_open' }); } catch (e) {} }
+  }
+  var _open = window.open;
+  window.open = function (u) {
+    if (u && String(u).indexOf('wa.me') !== -1) report(u);
+    return _open.apply(window, arguments);
+  };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="api.whatsapp.com"],a[href*="whatsapp://"]');
+    if (a) report(a.href);
+  }, true);
+})();

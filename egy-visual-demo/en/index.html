@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+  <meta name="theme-color" content="#071b20"/>
+  <meta name="description" content="Play EGY Crown Run: collect E-G-Y, chain skateboard tricks and discover the real Egy Skatepark in 6 October, Giza."/>
+  <link rel="canonical" href="https://www.egyskatepark.com/game/en/"/>
+  <link rel="alternate" hreflang="en" href="https://www.egyskatepark.com/game/en/"/>
+  <link rel="alternate" hreflang="ar" href="https://www.egyskatepark.com/game/ar/"/>
+  <meta property="og:title" content="EGY Crown Run | Play the Real Park"/>
+  <meta property="og:description" content="Collect E-G-Y. Land a 500-point line. Win the crown."/>
+  <title>EGY Crown Run | Skate Game</title>
+  <script type="module" crossorigin src="../assets/main-B084x1Sw.js"></script>
+  <link rel="stylesheet" crossorigin href="../assets/main-ZFe5ryoC.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="boot" class="boot-screen">
+    <div class="boot-brand"><i>♛</i><strong>EGY</strong><span>CROWN RUN</span></div>
+    <div class="boot-meter"><b id="boot-fill"></b></div>
+    <p id="boot-status">Loading the real park</p>
+    <p id="boot-error"></p>
+  </div>
+  <main id="menu" class="menu-screen">
+    <header class="game-header">
+      <a class="game-brand" href="https://www.egyskatepark.com/en/"><i>♛</i><span><b>EGY</b> SKATEPARK</span></a>
+      <a id="language-link" class="language-link" href="../ar/">العربية</a>
+    </header>
+    <section class="menu-copy">
+      <p id="menu-eyebrow">A REAL PARK. YOUR DIGITAL LINE.</p>
+      <h1 id="menu-title">CROWN RUN</h1>
+      <span id="menu-subtitle">Collect E · G · Y, chain a 500-point combo and own the line.</span>
+      <button id="start-game" class="primary-action"><b id="start-label">DROP IN</b><i>→</i></button>
+      <div class="mission-ticket">
+        <small>01 / VERTICAL SLICE</small>
+        <strong id="mission-title">FIRST EGY LINE</strong>
+        <span id="mission-description">Collect E · G · Y + land a 500 combo</span>
+      </div>
+    </section>
+    <aside class="control-card">
+      <p id="controls-title">RIDE / TRICK / CONNECT</p>
+      <dl>
+        <div><dt>W / ↑</dt><dd>Push</dd></div>
+        <div><dt>A D</dt><dd>Steer</dd></div>
+        <div><dt>SPACE</dt><dd>Ollie</dd></div>
+        <div><dt>J</dt><dd>Kickflip</dd></div>
+        <div><dt>L</dt><dd>Grind</dd></div>
+        <div><dt>SHIFT</dt><dd>Manual</dd></div>
+      </dl>
+    </aside>
+  </main>
+  <section id="hud" class="hud">
+    <div class="hud-mission"><small id="hud-mission-label">FIRST EGY LINE</small><strong id="mission-copy">Collect E · G · Y + land a 500 combo</strong></div>
+    <div class="hud-score"><small id="hud-score-label">SCORE</small><strong id="score-value">0</strong></div>
+    <div class="hud-line"><div><small id="hud-combo-label">COMBO</small><strong id="combo-value">×1.0</strong></div><div><small id="hud-line-label">LINE</small><strong id="line-value">0</strong></div></div>
+    <div class="letters" aria-label="EGY letters"><b id="letter-e">E</b><b id="letter-g">G</b><b id="letter-y">Y</b></div>
+    <div id="trick-callout" class="trick-callout"></div>
+  </section>
+  <section id="touch-controls" class="touch-controls" aria-label="Touch game controls">
+    <div id="touch-stick" class="touch-stick"><i id="touch-stick-nub"></i><span>RIDE</span></div>
+    <button id="touch-brake" class="touch-minor">BRAKE</button>
+    <div class="touch-actions">
+      <button id="touch-manual" class="touch-minor">MANUAL</button>
+      <button id="touch-grind" class="touch-minor">GRIND</button>
+      <button id="touch-flip" class="touch-main touch-flip">FLIP</button>
+      <button id="touch-jump" class="touch-main">JUMP</button>
+    </div>
+  </section>
+  <section id="pause-screen" class="modal-screen">
+    <div><small>EGY CROWN RUN</small><h2 id="pause-title">LINE PAUSED</h2><button id="resume-game">RESUME</button></div>
+  </section>
+  <section id="result-screen" class="modal-screen result-screen">
+    <div class="result-card">
+      <small id="result-eyebrow">LINE COMPLETE</small><i>♛</i><h2 id="result-title">EGY LEGEND</h2>
+      <strong id="result-score">0</strong><p id="result-body">You found the letters and owned the line.</p>
+      <div class="result-actions"><button id="replay-game">PLAY AGAIN</button><button id="share-score">SHARE SCORE</button></div>
+      <a id="book-session" href="/en/#premium-book">BOOK A REAL SESSION <b>↗</b></a>
+      <em>www.egyskatepark.com</em>
+    </div>
+  </section>
+</body>
+</html>

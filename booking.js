@@ -307,6 +307,22 @@
   else init();
 })();
 
+/* Arabic navigation: prices page */
+(function () {
+  'use strict';
+  function addPricesLink() {
+    if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
+    var nav = document.getElementById('primary-navigation');
+    if (!nav || nav.querySelector('a[href="/ar/prices/"]')) return;
+    var link = document.createElement('a');
+    link.href = '/ar/prices/';
+    link.textContent = 'الأسعار';
+    nav.appendChild(link);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addPricesLink);
+  else addPricesLink();
+})();
+
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */
 (function () {
   'use strict';

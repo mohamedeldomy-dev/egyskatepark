@@ -681,14 +681,14 @@ html[lang="en"] .motion-gallery-heading {
   position: relative;
   inset: auto;
   display: grid;
-  grid-template-areas: "eyebrow summary" "title summary" "title actions";
+  grid-template-areas: "eyebrow ." "title summary" ". actions";
   grid-template-columns: minmax(0,1.35fr) minmax(320px,.85fr);
   gap: .8rem clamp(2rem,5vw,5.5rem);
   width: 100%;
 }
 html[lang="en"] .motion-gallery-heading>p{grid-area:eyebrow}
 html[lang="en"] .motion-gallery-heading h1{grid-area:title;max-width:12ch;margin:0;font-size:clamp(3.5rem,5vw,5.35rem);line-height:.92;letter-spacing:-.052em;text-wrap:balance}
-html[lang="en"] .motion-gallery-heading>span{grid-area:summary;align-self:end;max-width:520px;margin:0;padding:1rem 1.1rem;border-inline-start:3px solid var(--yellow);color:rgba(255,249,239,.94);background:linear-gradient(135deg,rgba(5,26,33,.86),rgba(9,48,58,.72));box-shadow:0 20px 48px rgba(0,0,0,.22);backdrop-filter:blur(12px);font-family:Arial,sans-serif;font-size:clamp(.93rem,1.15vw,1.04rem);font-weight:560;line-height:1.6}
+html[lang="en"] .motion-gallery-heading>span{grid-area:summary;align-self:center;max-width:520px;margin:0;padding:1rem 1.1rem;border-inline-start:3px solid var(--yellow);color:rgba(255,249,239,.94);background:linear-gradient(135deg,rgba(5,26,33,.86),rgba(9,48,58,.72));box-shadow:0 20px 48px rgba(0,0,0,.22);backdrop-filter:blur(12px);font-family:Arial,sans-serif;font-size:clamp(.93rem,1.15vw,1.04rem);font-weight:560;line-height:1.6}
 html[lang="en"] .motion-gallery-heading>div{grid-area:actions;display:grid;grid-template-columns:1fr 1fr;gap:.55rem;width:100%;margin:0}
 html[lang="en"] .motion-gallery-heading a{min-width:0;min-height:72px}
 html[lang="en"] :is(.motion-gallery-instruction,.motion-gallery-stage,.motion-gallery-detail,.motion-gallery-location){position:relative;inset:auto}

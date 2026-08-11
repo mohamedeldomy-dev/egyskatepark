@@ -404,8 +404,10 @@
     if (location.pathname !== '/en/' && location.pathname !== '/en') return;
     var heading = document.querySelector('.motion-gallery-heading h1');
     var intro = document.querySelector('.motion-gallery-heading > span');
-    if (heading) heading.textContent = 'An Active Day Out for Families & Friends';
-    if (intro) intro.textContent = "A park full of firsts — roller skating, skateboarding & padel from age 4. Classes, 150 EGP all-day entry and birthdays. Even if you've never tried.";
+    var desiredHeading = 'An Active Day Out for Families & Friends';
+    var desiredIntro = "A park full of firsts — roller skating, skateboarding & padel from age 4. Classes, 150 EGP all-day entry and birthdays. Even if you've never tried.";
+    if (heading && heading.textContent.trim() !== desiredHeading) heading.textContent = desiredHeading;
+    if (intro && intro.textContent.trim() !== desiredIntro) intro.textContent = desiredIntro;
 
     var primary = document.getElementById('primary-navigation');
     if (primary) {
@@ -430,9 +432,39 @@
     addLink(footerNav, '/en/location/', 'LOCATION');
     addLink(footerNav, '/en/safety/', 'SAFETY');
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateEnglishHomepage);
-  else updateEnglishHomepage();
-  window.setTimeout(updateEnglishHomepage, 600);
+  function keepEnglishHomepageUpdated() {
+    if (location.pathname !== '/en/' && location.pathname !== '/en') return;
+
+    /* The legacy client bundle may replace the server-rendered copy while it
+       hydrates. Watch that short hand-off and re-apply the approved copy and
+       navigation without disturbing the gallery's own interactions. */
+    var queued = false;
+    var observer = new MutationObserver(function () {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(function () {
+        queued = false;
+        updateEnglishHomepage();
+      });
+    });
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+
+    [700, 1400, 2600, 4500, 7000].forEach(function (delay) {
+      window.setTimeout(updateEnglishHomepage, delay);
+    });
+    window.setTimeout(function () {
+      updateEnglishHomepage();
+      observer.disconnect();
+    }, 9000);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', keepEnglishHomepageUpdated);
+  else keepEnglishHomepageUpdated();
+  window.addEventListener('load', function () { window.setTimeout(updateEnglishHomepage, 300); });
+  window.addEventListener('pageshow', function () { window.setTimeout(updateEnglishHomepage, 300); });
 })();
 
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */

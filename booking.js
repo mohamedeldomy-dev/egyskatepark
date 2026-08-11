@@ -355,6 +355,37 @@
     if (before && before.parentNode === container) container.insertBefore(link, before);
     else container.appendChild(link);
   }
+  function upgradePanel(panel, destination, readyAttribute, label) {
+    if (!panel || !destination) return;
+    if (panel.tagName.toLowerCase() === 'a') {
+      panel.href = destination;
+      panel.classList.add('motion-gallery-panel-link');
+      panel.setAttribute(readyAttribute, 'true');
+      panel.setAttribute('aria-label', label);
+      return;
+    }
+    var link = document.createElement('a');
+    Array.prototype.forEach.call(panel.attributes, function (attribute) {
+      if (attribute.name !== 'type' && attribute.name !== 'aria-pressed') {
+        link.setAttribute(attribute.name, attribute.value);
+      }
+    });
+    link.href = destination;
+    link.classList.add('motion-gallery-panel-link');
+    link.setAttribute(readyAttribute, 'true');
+    link.setAttribute('aria-label', label);
+    while (panel.firstChild) link.appendChild(panel.firstChild);
+    panel.replaceWith(link);
+  }
+  function addWhatsappSource(selector, suffix) {
+    var link = document.querySelector(selector);
+    if (!link) return;
+    var url = new URL(link.href, location.href);
+    var message = url.searchParams.get('text') || '';
+    message = message.replace(/\s*\(من [^)]+\)\s*$/, '').trim();
+    url.searchParams.set('text', message + ' ' + suffix);
+    link.href = url.toString();
+  }
   function updateArabicHomepage() {
     if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
     var heading = document.querySelector('.motion-gallery-heading h1');
@@ -373,20 +404,44 @@
     var destinations = ['/ar/patinage/', '', '/ar/prices/', '', '/ar/birthday/'];
     panels.forEach(function (panel, index) {
       var destination = destinations[index];
-      if (!destination || panel.getAttribute('data-ar-route-ready') === 'true') return;
-      panel.setAttribute('data-ar-route-ready', 'true');
-      panel.setAttribute('aria-label', (panel.textContent || '').trim() + ' — افتح الصفحة');
-      panel.addEventListener('click', function () { location.href = destination; });
+      if (!destination) return;
+      upgradePanel(panel, destination, 'data-ar-route-ready', (panel.textContent || '').trim() + ' — افتح الصفحة');
     });
+
+    addWhatsappSource('#premium-day-pass a[href*="wa.me"]', '(من قسم الدخول اليومي)');
+    addWhatsappSource('#premium-shop a[href*="wa.me"]', '(من قسم المتجر)');
+    addWhatsappSource('#premium-celebrate a[href*="wa.me"]', '(من قسم الاحتفالات)');
+    addWhatsappSource('#premium-visit a[href*="wa.me"]', '(من الفوتر)');
 
     var footerNav = document.querySelector('footer nav');
     addLink(footerNav, '/ar/birthday/', 'عيد الميلاد');
     addLink(footerNav, '/ar/kids-outings-october/', 'خروجات أكتوبر');
     addLink(footerNav, '/ar/location/', 'الموقع والوصول');
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateArabicHomepage);
-  else updateArabicHomepage();
-  window.setTimeout(updateArabicHomepage, 600);
+  function keepArabicHomepageUpdated() {
+    if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
+    var queued = false;
+    var observer = new MutationObserver(function () {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(function () {
+        queued = false;
+        updateArabicHomepage();
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+    [700, 1400, 2600, 4500, 7000].forEach(function (delay) {
+      window.setTimeout(updateArabicHomepage, delay);
+    });
+    window.setTimeout(function () {
+      updateArabicHomepage();
+      observer.disconnect();
+    }, 9000);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', keepArabicHomepageUpdated);
+  else keepArabicHomepageUpdated();
+  window.addEventListener('load', function () { window.setTimeout(updateArabicHomepage, 300); });
+  window.addEventListener('pageshow', function () { window.setTimeout(updateArabicHomepage, 300); });
 })();
 
 /* English homepage: acquisition pages and navigation */
@@ -399,6 +454,37 @@
     link.textContent = label;
     if (before && before.parentNode === container) container.insertBefore(link, before);
     else container.appendChild(link);
+  }
+  function upgradePanel(panel, destination, readyAttribute, label) {
+    if (!panel || !destination) return;
+    if (panel.tagName.toLowerCase() === 'a') {
+      panel.href = destination;
+      panel.classList.add('motion-gallery-panel-link');
+      panel.setAttribute(readyAttribute, 'true');
+      panel.setAttribute('aria-label', label);
+      return;
+    }
+    var link = document.createElement('a');
+    Array.prototype.forEach.call(panel.attributes, function (attribute) {
+      if (attribute.name !== 'type' && attribute.name !== 'aria-pressed') {
+        link.setAttribute(attribute.name, attribute.value);
+      }
+    });
+    link.href = destination;
+    link.classList.add('motion-gallery-panel-link');
+    link.setAttribute(readyAttribute, 'true');
+    link.setAttribute('aria-label', label);
+    while (panel.firstChild) link.appendChild(panel.firstChild);
+    panel.replaceWith(link);
+  }
+  function addWhatsappSource(selector, suffix) {
+    var link = document.querySelector(selector);
+    if (!link) return;
+    var url = new URL(link.href, location.href);
+    var message = url.searchParams.get('text') || '';
+    message = message.replace(/\s*\((?:From|from) [^)]+\)\s*$/, '').trim();
+    url.searchParams.set('text', message + ' ' + suffix);
+    link.href = url.toString();
   }
   function updateEnglishHomepage() {
     if (location.pathname !== '/en/' && location.pathname !== '/en') return;
@@ -420,11 +506,14 @@
     var destinations = ['/en/roller-skating-classes/', '', '/en/prices/', '', '/en/birthday/'];
     panels.forEach(function (panel, index) {
       var destination = destinations[index];
-      if (!destination || panel.getAttribute('data-en-route-ready') === 'true') return;
-      panel.setAttribute('data-en-route-ready', 'true');
-      panel.setAttribute('aria-label', (panel.textContent || '').trim() + ' — open page');
-      panel.addEventListener('click', function () { location.href = destination; });
+      if (!destination) return;
+      upgradePanel(panel, destination, 'data-en-route-ready', (panel.textContent || '').trim() + ' — open page');
     });
+
+    addWhatsappSource('#premium-day-pass a[href*="wa.me"]', '(from homepage day pass section)');
+    addWhatsappSource('#premium-shop a[href*="wa.me"]', '(from homepage shop section)');
+    addWhatsappSource('#premium-celebrate a[href*="wa.me"]', '(from homepage celebrations section)');
+    addWhatsappSource('#premium-visit a[href*="wa.me"]', '(from homepage footer)');
 
     var footerNav = document.querySelector('footer nav');
     addLink(footerNav, '/en/birthday/', 'BIRTHDAY');

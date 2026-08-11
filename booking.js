@@ -345,6 +345,51 @@
   else addLocationFooterLink();
 })();
 
+/* Arabic homepage: acquisition pages, navigation and footer */
+(function () {
+  'use strict';
+  function addLink(container, href, label, before) {
+    if (!container || container.querySelector('a[href="' + href + '"]')) return;
+    var link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    if (before && before.parentNode === container) container.insertBefore(link, before);
+    else container.appendChild(link);
+  }
+  function updateArabicHomepage() {
+    if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
+    var heading = document.querySelector('.motion-gallery-heading h1');
+    var intro = document.querySelector('.motion-gallery-heading > span');
+    if (heading) heading.textContent = 'خروجة حركة ولعب للعيلة والأصحاب';
+    if (intro) intro.textContent = 'مكان مليان أول مرة — باتيناج وسكيت بورد وبادل من سن 4 سنين، كلاسات ودخول يوم كامل بـ150 جنيه وأعياد ميلاد. حتى لو عمرك ما جربت.';
+
+    var primary = document.getElementById('primary-navigation');
+    if (primary) {
+      var firstExisting = primary.querySelector('a');
+      addLink(primary, '/ar/patinage/', 'الباتيناج', firstExisting ? firstExisting.nextSibling : null);
+      addLink(primary, '/ar/prices/', 'الأسعار');
+    }
+
+    var panels = document.querySelectorAll('.motion-gallery-stage button');
+    var destinations = ['/ar/patinage/', '', '/ar/prices/', '', '/ar/birthday/'];
+    panels.forEach(function (panel, index) {
+      var destination = destinations[index];
+      if (!destination || panel.getAttribute('data-ar-route-ready') === 'true') return;
+      panel.setAttribute('data-ar-route-ready', 'true');
+      panel.setAttribute('aria-label', (panel.textContent || '').trim() + ' — افتح الصفحة');
+      panel.addEventListener('click', function () { location.href = destination; });
+    });
+
+    var footerNav = document.querySelector('footer nav');
+    addLink(footerNav, '/ar/birthday/', 'عيد الميلاد');
+    addLink(footerNav, '/ar/kids-outings-october/', 'خروجات أكتوبر');
+    addLink(footerNav, '/ar/location/', 'الموقع والوصول');
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateArabicHomepage);
+  else updateArabicHomepage();
+  window.setTimeout(updateArabicHomepage, 600);
+})();
+
 /* English homepage: acquisition pages and navigation */
 (function () {
   'use strict';

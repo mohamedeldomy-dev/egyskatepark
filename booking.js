@@ -338,7 +338,6 @@
       footerLinks.appendChild(document.createTextNode(' · '));
       footerLinks.appendChild(link);
     }
-    addFooterLink('/ar/location/', 'الموقع والوصول');
     addFooterLink('/ar/safety/', 'الأمان');
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addLocationFooterLink);

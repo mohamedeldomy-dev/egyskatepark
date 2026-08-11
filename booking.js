@@ -340,6 +340,51 @@
   else addLocationFooterLink();
 })();
 
+/* English homepage: acquisition pages and navigation */
+(function () {
+  'use strict';
+  function addLink(container, href, label, before) {
+    if (!container || container.querySelector('a[href="' + href + '"]')) return;
+    var link = document.createElement('a');
+    link.href = href;
+    link.textContent = label;
+    if (before && before.parentNode === container) container.insertBefore(link, before);
+    else container.appendChild(link);
+  }
+  function updateEnglishHomepage() {
+    if (location.pathname !== '/en/' && location.pathname !== '/en') return;
+    var heading = document.querySelector('.motion-gallery-heading h1');
+    var intro = document.querySelector('.motion-gallery-heading > span');
+    if (heading) heading.textContent = 'An Active Day Out for Families & Friends';
+    if (intro) intro.textContent = "A park full of firsts — roller skating, skateboarding & padel from age 4. Classes, 150 EGP all-day entry and birthdays. Even if you've never tried.";
+
+    var primary = document.getElementById('primary-navigation');
+    if (primary) {
+      var firstExisting = primary.querySelector('a');
+      addLink(primary, '/en/roller-skating-classes/', 'CLASSES', firstExisting ? firstExisting.nextSibling : null);
+      addLink(primary, '/en/prices/', 'PRICES');
+    }
+
+    var panels = document.querySelectorAll('.motion-gallery-stage button');
+    var destinations = ['/en/roller-skating-classes/', '', '/en/prices/', '', '/en/birthday/'];
+    panels.forEach(function (panel, index) {
+      var destination = destinations[index];
+      if (!destination || panel.getAttribute('data-en-route-ready') === 'true') return;
+      panel.setAttribute('data-en-route-ready', 'true');
+      panel.setAttribute('aria-label', (panel.textContent || '').trim() + ' — open page');
+      panel.addEventListener('click', function () { location.href = destination; });
+    });
+
+    var footerNav = document.querySelector('footer nav');
+    addLink(footerNav, '/en/birthday/', 'BIRTHDAY');
+    addLink(footerNav, '/en/kids-activities-october/', 'THINGS TO DO');
+    addLink(footerNav, '/en/location/', 'LOCATION');
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateEnglishHomepage);
+  else updateEnglishHomepage();
+  window.setTimeout(updateEnglishHomepage, 600);
+})();
+
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */
 (function () {
   'use strict';

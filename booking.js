@@ -369,7 +369,7 @@
       addLink(primary, '/ar/prices/', 'الأسعار');
     }
 
-    var panels = document.querySelectorAll('.motion-gallery-stage button');
+    var panels = document.querySelectorAll('.motion-gallery-stage > button, .motion-gallery-stage > a');
     var destinations = ['/ar/patinage/', '', '/ar/prices/', '', '/ar/birthday/'];
     panels.forEach(function (panel, index) {
       var destination = destinations[index];
@@ -414,7 +414,7 @@
       addLink(primary, '/en/prices/', 'PRICES');
     }
 
-    var panels = document.querySelectorAll('.motion-gallery-stage button');
+    var panels = document.querySelectorAll('.motion-gallery-stage > button, .motion-gallery-stage > a');
     var destinations = ['/en/roller-skating-classes/', '', '/en/prices/', '', '/en/birthday/'];
     panels.forEach(function (panel, index) {
       var destination = destinations[index];

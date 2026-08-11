@@ -323,6 +323,23 @@
   else addPricesLink();
 })();
 
+/* Arabic footer: location and directions */
+(function () {
+  'use strict';
+  function addLocationFooterLink() {
+    if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
+    var footerLinks = document.querySelector('footer small');
+    if (!footerLinks || footerLinks.querySelector('a[href="/ar/location/"]')) return;
+    var link = document.createElement('a');
+    link.href = '/ar/location/';
+    link.textContent = 'الموقع والوصول';
+    footerLinks.appendChild(document.createTextNode(' · '));
+    footerLinks.appendChild(link);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addLocationFooterLink);
+  else addLocationFooterLink();
+})();
+
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */
 (function () {
   'use strict';

@@ -329,12 +329,17 @@
   function addLocationFooterLink() {
     if (location.pathname !== '/ar/' && location.pathname !== '/ar') return;
     var footerLinks = document.querySelector('footer small');
-    if (!footerLinks || footerLinks.querySelector('a[href="/ar/location/"]')) return;
-    var link = document.createElement('a');
-    link.href = '/ar/location/';
-    link.textContent = 'الموقع والوصول';
-    footerLinks.appendChild(document.createTextNode(' · '));
-    footerLinks.appendChild(link);
+    if (!footerLinks) return;
+    function addFooterLink(href, label) {
+      if (footerLinks.querySelector('a[href="' + href + '"]')) return;
+      var link = document.createElement('a');
+      link.href = href;
+      link.textContent = label;
+      footerLinks.appendChild(document.createTextNode(' · '));
+      footerLinks.appendChild(link);
+    }
+    addFooterLink('/ar/location/', 'الموقع والوصول');
+    addFooterLink('/ar/safety/', 'الأمان');
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addLocationFooterLink);
   else addLocationFooterLink();
@@ -379,6 +384,7 @@
     addLink(footerNav, '/en/birthday/', 'BIRTHDAY');
     addLink(footerNav, '/en/kids-activities-october/', 'THINGS TO DO');
     addLink(footerNav, '/en/location/', 'LOCATION');
+    addLink(footerNav, '/en/safety/', 'SAFETY');
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateEnglishHomepage);
   else updateEnglishHomepage();

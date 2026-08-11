@@ -1,4 +1,111 @@
-/* English homepage editorial spacing for the longer family-focused headline. */
+/* English homepage editorial spacing and legibility. */
+html[lang="en"] body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="en"] main :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+html[lang="en"] main :is(p, li, summary, address) {
+  text-wrap: pretty;
+}
+
+html[lang="en"] .gallery-nav nav a {
+  white-space: nowrap;
+}
+
+html[lang="en"] .premium-world :is(h2, h3) {
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+
+html[lang="en"] .premium-world :is(p, li, address, blockquote, em) {
+  text-wrap: pretty;
+}
+
+html[lang="en"] .premium-world small {
+  font-size: max(0.68rem, 11px);
+  line-height: 1.35;
+}
+
+html[lang="en"] .premium-world :is(.premium-signal span, .premium-academy-copy li, .premium-day-copy li, .premium-shop-lists li) {
+  font-size: max(0.74rem, 12px);
+  line-height: 1.5;
+}
+
+html[lang="en"] .premium-world :is(.premium-academy-copy a, .premium-day-copy a, .premium-shop-lists > a, .premium-perfect-day article a, .premium-perfect-day article b, .premium-visit nav a) {
+  font-size: max(0.72rem, 11.5px);
+  line-height: 1.35;
+}
+
+@media (max-width: 1100px) {
+  html[lang="en"] .approved-nav {
+    display: flex;
+    justify-content: space-between;
+    min-height: 82px;
+    padding: 9px 16px;
+  }
+
+  html[lang="en"] .approved-nav nav {
+    position: absolute;
+    top: 76px;
+    right: 12px;
+    left: 12px;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px;
+    background: rgba(5, 29, 35, 0.97);
+    box-shadow: 0 24px 70px rgba(2, 18, 22, 0.35);
+    backdrop-filter: blur(18px);
+  }
+
+  html[lang="en"] .approved-nav nav.open {
+    display: flex;
+  }
+
+  html[lang="en"] .approved-nav nav a {
+    min-height: 44px;
+    padding: 15px 12px;
+    border-bottom: 1px solid rgba(255, 245, 232, 0.12);
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  html[lang="en"] .approved-nav-actions {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  html[lang="en"] .approved-nav-actions .approved-instagram {
+    display: none;
+  }
+
+  html[lang="en"] .approved-nav .menu-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 42px;
+    height: 42px;
+    padding: 10px;
+    color: #fff5e8;
+    background: rgba(5, 29, 35, 0.36);
+    border: 1px solid rgba(255, 245, 232, 0.36);
+  }
+
+  html[lang="en"] .approved-nav .menu-button span {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
 @media (min-width: 721px) {
   html[lang="en"] .motion-gallery {
     min-height: 1120px;
@@ -42,15 +149,18 @@
   html[lang="en"] .motion-gallery-heading a {
     flex: 1 1 0;
     min-width: 0;
-    min-height: 68px;
+    min-height: 74px;
+    padding-inline: 1rem;
   }
 
   html[lang="en"] .motion-gallery-heading a b {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
+    line-height: 1.15;
   }
 
   html[lang="en"] .motion-gallery-heading a small {
-    font-size: 0.52rem;
+    font-size: 0.58rem;
+    line-height: 1.35;
   }
 
   html[lang="en"] .motion-gallery-instruction {
@@ -64,16 +174,44 @@
   html[lang="en"] .motion-gallery-detail {
     top: 57.7rem;
   }
+
+  html[lang="en"] .motion-gallery-instruction {
+    font-size: 0.64rem;
+  }
+
+  html[lang="en"] .motion-gallery-detail p {
+    color: rgba(255, 249, 239, 0.86);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  html[lang="en"] .motion-gallery-detail small,
+  html[lang="en"] .motion-gallery-detail > span {
+    font-size: 0.62rem;
+  }
+
+  html[lang="en"] .motion-gallery-detail > b,
+  html[lang="en"] .motion-gallery-detail > a {
+    font-size: 0.66rem;
+  }
+
+  html[lang="en"] .motion-gallery-location span {
+    font-size: 0.68rem;
+  }
+
+  html[lang="en"] .motion-gallery-location b {
+    font-size: 0.62rem;
+  }
 }
 
-@media (min-width: 721px) and (max-width: 1050px) {
+@media (min-width: 981px) and (max-width: 1180px) {
   html[lang="en"] .motion-gallery-heading {
-    grid-template-columns: minmax(440px, 1.35fr) minmax(290px, 0.8fr);
-    gap: 0.8rem 2rem;
+    grid-template-columns: minmax(450px, 1.22fr) minmax(320px, 0.9fr);
+    gap: 0.8rem clamp(1.5rem, 3vw, 2.75rem);
   }
 
   html[lang="en"] .motion-gallery-heading h1 {
-    font-size: clamp(3.15rem, 5.5vw, 3.8rem);
+    font-size: clamp(3.2rem, 5.3vw, 4rem);
   }
 
   html[lang="en"] .motion-gallery-heading > span {
@@ -85,23 +223,122 @@
   }
 }
 
-@media (max-width: 720px) {
+/* The English headline needs a single-column editorial composition on tablets.
+   This prevents the copy and CTA cards from competing for the same space. */
+@media (min-width: 721px) and (max-width: 980px) {
+  html[lang="en"] .gallery-nav {
+    grid-template-columns: 1fr auto;
+    min-height: 68px;
+  }
+
+  html[lang="en"] .gallery-nav nav {
+    position: fixed;
+    inset: 68px 0 auto;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem var(--pad) 1.4rem;
+    background: #0b2830;
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.3);
+  }
+
+  html[lang="en"] .gallery-nav nav.open {
+    display: flex;
+  }
+
+  html[lang="en"] .gallery-nav nav a {
+    min-height: 44px;
+    font-size: 0.75rem;
+  }
+
+  html[lang="en"] .gallery-nav .nav-actions > a {
+    display: none;
+  }
+
+  html[lang="en"] .gallery-nav .menu-button {
+    display: grid !important;
+    place-content: center;
+    gap: 5px;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0.7rem !important;
+  }
+
+  html[lang="en"] .gallery-nav .menu-button span {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: #fff9ef;
+  }
+
   html[lang="en"] .motion-gallery {
-    min-height: 1300px;
+    min-height: 1320px;
+  }
+
+  html[lang="en"] .motion-gallery-heading {
+    inset: 5.75rem 1.5rem auto;
+    display: block;
+    width: auto;
   }
 
   html[lang="en"] .motion-gallery-heading h1 {
-    max-width: 350px;
-    font-size: clamp(2.7rem, 12vw, 3.4rem);
-    line-height: 0.95;
+    max-width: 760px;
+    margin-top: 0.6rem;
+    font-size: clamp(3.25rem, 7.6vw, 4.25rem);
+    line-height: 0.94;
+  }
+
+  html[lang="en"] .motion-gallery-heading > span {
+    display: block;
+    max-width: 650px;
+    margin-top: 0.9rem;
+    padding: 0.85rem 0.95rem;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  html[lang="en"] .motion-gallery-heading > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+    max-width: 650px;
+    margin-top: 0.85rem;
+  }
+
+  html[lang="en"] .motion-gallery-heading a {
+    min-height: 72px;
+  }
+
+  html[lang="en"] .motion-gallery-instruction {
+    top: 33rem;
+  }
+
+  html[lang="en"] .motion-gallery-stage {
+    top: 35rem;
+  }
+
+  html[lang="en"] .motion-gallery-detail {
+    top: 63rem;
+  }
+}
+
+@media (max-width: 720px) {
+  html[lang="en"] .motion-gallery {
+    min-height: 1390px;
+  }
+
+  html[lang="en"] .motion-gallery-heading h1 {
+    max-width: 100%;
+    font-size: clamp(2.45rem, 11.5vw, 3.2rem);
+    line-height: 0.96;
     letter-spacing: -0.04em;
     text-wrap: balance;
   }
 
   html[lang="en"] .motion-gallery-heading > span {
-    max-width: 350px;
+    max-width: 100%;
     margin-top: 0.75rem;
-    padding: 0.78rem 0.85rem;
+    padding: 0.82rem 0.88rem;
     border-inline-start: 3px solid var(--yellow);
     border-radius: 2px;
     color: rgba(255, 249, 239, 0.94);
@@ -109,7 +346,7 @@
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
     backdrop-filter: blur(9px);
     font-family: Arial, sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 560;
     line-height: 1.55;
   }
@@ -119,26 +356,131 @@
   }
 
   html[lang="en"] .motion-gallery-heading a {
-    min-height: 62px;
+    min-height: 66px;
   }
 
   html[lang="en"] .motion-gallery-heading a b {
-    font-size: 0.56rem;
+    font-size: 0.7rem;
+    line-height: 1.15;
   }
 
   html[lang="en"] .motion-gallery-heading a small {
-    font-size: 0.46rem;
+    font-size: 0.57rem;
+    line-height: 1.35;
   }
 
   html[lang="en"] .motion-gallery-instruction {
-    top: 34rem;
+    top: 36rem;
+    font-size: 0.58rem;
   }
 
   html[lang="en"] .motion-gallery-stage {
-    top: 36rem;
+    top: 38rem;
   }
 
   html[lang="en"] .motion-gallery-detail {
-    top: 63rem;
+    top: 65.5rem;
+    min-height: 240px;
+  }
+
+  html[lang="en"] .motion-gallery-detail p {
+    color: rgba(255, 249, 239, 0.88);
+    font-size: 0.76rem;
+    line-height: 1.58;
+  }
+
+  html[lang="en"] .motion-gallery-detail h2 {
+    font-size: 1.28rem;
+    line-height: 1.08;
+  }
+
+  html[lang="en"] .motion-gallery-detail > a {
+    font-size: 0.6rem;
+    line-height: 1.3;
+  }
+
+  html[lang="en"] .motion-gallery-location span {
+    max-width: 245px;
+    font-size: 0.6rem;
+    line-height: 1.35;
+  }
+
+  html[lang="en"] .motion-gallery-location b {
+    font-size: 0.58rem;
+  }
+
+  html[lang="en"] .park-extra-card p,
+  html[lang="en"] .quick-pathway-copy p,
+  html[lang="en"] .family-copy li span,
+  html[lang="en"] .form-heading p,
+  html[lang="en"] .visit-section address {
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+
+  html[lang="en"] .park-extra-card li,
+  html[lang="en"] .park-extra-card a,
+  html[lang="en"] .quick-pathway-grid a,
+  html[lang="en"] .day-pass-copy > a,
+  html[lang="en"] .shop-offers > a,
+  html[lang="en"] .egy-bar-copy > a,
+  html[lang="en"] .reviews-copy > a {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  html[lang="en"] footer nav {
+    justify-content: center;
+  }
+
+  html[lang="en"] footer nav a,
+  html[lang="en"] footer p,
+  html[lang="en"] footer small {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  html[lang="en"] .premium-world h2,
+  html[lang="en"] .premium-perfect-day > header h2,
+  html[lang="en"] .premium-pricing > header h2 {
+    font-size: clamp(2.45rem, 10.5vw, 3.7rem);
+    line-height: 0.96;
+  }
+
+  html[lang="en"] .premium-shop-campaigns strong {
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 1;
+  }
+
+  html[lang="en"] .premium-book label {
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+
+  html[lang="en"] .premium-book label > span {
+    font-size: 0.64rem;
+  }
+
+  html[lang="en"] .premium-footer nav {
+    justify-self: start;
+    gap: 18px;
+  }
+
+  html[lang="en"] .premium-footer nav a {
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  html[lang="en"] .premium-mobile-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  html[lang="en"] .premium-mobile-actions a {
+    min-width: 0;
+    padding-inline: 0.5rem;
+    font-size: 0.66rem;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
   }
 }

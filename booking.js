@@ -319,8 +319,9 @@
     link.textContent = 'الأسعار';
     nav.appendChild(link);
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addPricesLink);
-  else addPricesLink();
+  function startPricesLink() { window.setTimeout(addPricesLink, 1200); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startPricesLink);
+  else startPricesLink();
 })();
 
 /* Arabic footer: location and directions */
@@ -340,8 +341,9 @@
     }
     addFooterLink('/ar/safety/', 'الأمان');
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addLocationFooterLink);
-  else addLocationFooterLink();
+  function startLocationFooterLink() { window.setTimeout(addLocationFooterLink, 1200); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startLocationFooterLink);
+  else startLocationFooterLink();
 })();
 
 /* Arabic homepage: acquisition pages, navigation and footer */
@@ -438,10 +440,11 @@
       observer.disconnect();
     }, 9000);
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', keepArabicHomepageUpdated);
-  else keepArabicHomepageUpdated();
-  window.addEventListener('load', function () { window.setTimeout(updateArabicHomepage, 300); });
-  window.addEventListener('pageshow', function () { window.setTimeout(updateArabicHomepage, 300); });
+  function startArabicHomepageUpdates() { window.setTimeout(keepArabicHomepageUpdated, 1200); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startArabicHomepageUpdates);
+  else startArabicHomepageUpdates();
+  window.addEventListener('load', function () { window.setTimeout(updateArabicHomepage, 1600); });
+  window.addEventListener('pageshow', function () { window.setTimeout(updateArabicHomepage, 1600); });
 })();
 
 /* English homepage: acquisition pages and navigation */
@@ -550,10 +553,11 @@
       observer.disconnect();
     }, 9000);
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', keepEnglishHomepageUpdated);
-  else keepEnglishHomepageUpdated();
-  window.addEventListener('load', function () { window.setTimeout(updateEnglishHomepage, 300); });
-  window.addEventListener('pageshow', function () { window.setTimeout(updateEnglishHomepage, 300); });
+  function startEnglishHomepageUpdates() { window.setTimeout(keepEnglishHomepageUpdated, 1200); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startEnglishHomepageUpdates);
+  else startEnglishHomepageUpdates();
+  window.addEventListener('load', function () { window.setTimeout(updateEnglishHomepage, 1600); });
+  window.addEventListener('pageshow', function () { window.setTimeout(updateEnglishHomepage, 1600); });
 })();
 
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */

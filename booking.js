@@ -560,6 +560,35 @@
   window.addEventListener('pageshow', function () { window.setTimeout(updateEnglishHomepage, 1600); });
 })();
 
+/* Carry the chosen training package into the existing homepage booking form.
+   No booking is submitted here; the visitor still reviews and confirms it. */
+(function () {
+  'use strict';
+  function clean(value) { return String(value || '').replace(/\s+/g, ' ').trim(); }
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('#premium-pricing a[href="#premium-book"]');
+    if (!link) return;
+    var card = link.closest('article');
+    var heading = card && card.querySelector('h3');
+    var form = document.querySelector('#premium-book form');
+    var select = form && form.querySelector('select[name="package"]');
+    if (!heading || !select) return;
+    var name = clean(heading.textContent);
+    var option = Array.prototype.find.call(select.options, function (item) {
+      return clean(item.textContent).split(' — ')[0] === name;
+    });
+    // Fail closed if the displayed card no longer matches a booking option.
+    if (!option) return;
+    select.value = option.value;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    var activity = form.querySelector('select[name="activity"]');
+    if (activity && !/رولر|سكيت بورد|roller|skateboard/i.test(activity.value)) {
+      activity.selectedIndex = 0;
+      activity.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+})();
+
 /* --- measurement patch: count WhatsApp opens made by scripts (not only link clicks) --- */
 (function () {
   'use strict';

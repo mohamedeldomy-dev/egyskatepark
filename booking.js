@@ -242,7 +242,7 @@
     }
     ticket = { reference: p, name: r, phone: a, age: o, activity: s, level: c, packageName: l, date: u, time: d, payload: m, url: 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg) };
     renderTicket();
-    if (window.gtag) { try { window.gtag('event', 'generate_lead', { activity: s, package: l, page: location.pathname }); } catch (err) {} }
+    if (window.gtag) { try { window.gtag('event', 'booking_request_prepared', { activity: s, package: l, page: location.pathname, intent_stage: 'request_prepared_not_sent' }); } catch (err) {} }
   }
 
   function renderTicket() {
@@ -593,11 +593,11 @@
 (function () {
   'use strict';
   function report(u) {
-    if (window.gtag) { try { window.gtag('event', 'whatsapp_click', { link_url: String(u).slice(0, 200), page: location.pathname, via: 'js_open' }); } catch (e) {} }
+    if (window.gtag) { try { window.gtag('event', 'whatsapp_click', { link_url: 'https://wa.me/201026189811', page: location.pathname, via: 'js_open', intent_stage: 'whatsapp_open_only' }); } catch (e) {} }
   }
   var _open = window.open;
   window.open = function (u) {
-    if (u && String(u).indexOf('wa.me') !== -1) report(u);
+    if (u && /^https:\/\/wa\.me\//i.test(String(u))) report(u);
     return _open.apply(window, arguments);
   };
   document.addEventListener('click', function (e) {

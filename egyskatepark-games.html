@@ -111,7 +111,7 @@ window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);
 gtag('js',new Date());gtag('config','G-EW01W6MBHZ');
 document.addEventListener('click',function(e){
   var a=e.target.closest&&e.target.closest('a[href*="wa.me"]');
-  if(a){gtag('event','whatsapp_click',{link_url:a.href,page:location.pathname});}
+  if(a&&a.href&&/^https:\/\/wa\.me\//i.test(a.href)){gtag('event','whatsapp_click',{link_url:'https://wa.me/201026189811',page:location.pathname,intent_stage:'whatsapp_open_only'});}
 },true);
 </script>
 </head>

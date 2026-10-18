@@ -7,7 +7,8 @@
  var intents={visit:{code:'VISIT-01',label:'زيارة للبارك'},class:{code:'CLASS-01',label:'كلاس تدريب'},birthday:{code:'PARTY-01',label:'عيد ميلاد'}};
  if(!Object.prototype.hasOwnProperty.call(intents,intent))return;
  var query=new URLSearchParams(location.search);
- var sources={youtube:'YT',google:'G',tiktok:'TT'};
+ var sources={youtube:'YT',google:'G',tiktok:'TT',pmax:'PM',maps:'MAP',instagram:'IG'};
+ var channelNames={youtube:'YouTube',google:'Google',tiktok:'TikTok',pmax:'Google PMax',maps:'Google Maps',instagram:'Instagram'};
  var media={paid_video:'P',cpc:'P',organic_video:'O',organic:'O'};
  var source=query.get('utm_source'),medium=query.get('utm_medium');
  var knownSource=Object.prototype.hasOwnProperty.call(sources,source)&&Object.prototype.hasOwnProperty.call(media,medium);
@@ -27,7 +28,7 @@
  form.addEventListener('submit',function(event){
   event.preventDefault();
   if(form.reportValidity&&!form.reportValidity())return;
-  var message='أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
+  var message=(knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
   [['visitor','نوع الزيارة'],['activity','النشاط'],['age','الفئة العمرية'],['people','عدد المشاركين'],['equipment','المعدات']].forEach(function(pair){var v=value(pair[0]);if(v)message+='\n'+pair[1]+': '+v;});
   var date=value('day');
   if(/^\d{4}-\d{2}-\d{2}$/.test(date))message+='\nاليوم المفضل: '+date;

@@ -11,7 +11,11 @@
  var media={paid_video:'P',cpc:'P',organic_video:'O',organic:'O'};
  var source=query.get('utm_source'),medium=query.get('utm_medium');
  var knownSource=Object.prototype.hasOwnProperty.call(sources,source)&&Object.prototype.hasOwnProperty.call(media,medium);
- var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U');
+ var creativeMap={class_a:{intent:'class',suffix:'A'},class_b:{intent:'class',suffix:'B'},visit_a:{intent:'visit',suffix:'A'},visit_b:{intent:'visit',suffix:'B'},return_a:{intent:'visit',suffix:'R-A',returning:true},return_b:{intent:'visit',suffix:'R-B',returning:true}};
+ var creative=query.get('utm_content');
+ var variant=Object.prototype.hasOwnProperty.call(creativeMap,creative)&&creativeMap[creative].intent===intent?creativeMap[creative]:null;
+ var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
+ if(variant&&variant.returning&&form.elements.visitor)form.elements.visitor.value='راجع ألعب';
  function value(name){var field=form.elements[name];return field?String(field.value||'').trim():'';}
  form.addEventListener('invalid',function(event){
   var field=event.target;
@@ -28,7 +32,7 @@
   var date=value('day');
   if(/^\d{4}-\d{2}-\d{2}$/.test(date))message+='\nاليوم المفضل: '+date;
   message+='\nبرجاء تأكيد المتاح والسعر الإجمالي والموعد قبل الزيارة.';
-  if(typeof window.gtag==='function')window.gtag('event','whatsapp_click',{link_url:'https://wa.me/201026189811',page:location.pathname,intent_type:intent,source_code:code,intent_stage:'whatsapp_open_only',transport_type:'beacon'});
+  if(typeof window.gtag==='function')window.gtag('event','whatsapp_click',{link_url:'https://wa.me/201026189811',page:location.pathname,intent_type:intent,source_code:code,creative_id:variant?creative:'unspecified',intent_stage:'whatsapp_open_only',transport_type:'beacon'});
   window.open('https://wa.me/201026189811?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
  });
 })();

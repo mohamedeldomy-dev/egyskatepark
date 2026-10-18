@@ -4,7 +4,7 @@
  var form=document.getElementById('visit-request');
  if(!form)return;
  var intent=document.body.getAttribute('data-visit-intent');
- var intents={visit:{code:'VISIT-01',label:'زيارة للبارك'},class:{code:'CLASS-01',label:'كلاس تدريب'},birthday:{code:'PARTY-01',label:'عيد ميلاد'}};
+ var intents={visit:{code:'VISIT-01',label:'زيارة للبارك'},class:{code:'CLASS-01',label:'كلاس تدريب'},birthday:{code:'PARTY-01',label:'عيد ميلاد'},offpeak:{code:'OFFPEAK-01',label:'عرض ساعتين بـ١٠٠ جنيه، الاثنين–الأربعاء، داخل٢–٥ عصرًا، آخر دخول٣ عصرًا؛ الدخول فقط والتأجير والتدريب منفصلان'}};
  if(!Object.prototype.hasOwnProperty.call(intents,intent))return;
  var query=new URLSearchParams(location.search);
  var sources={youtube:'YT',google:'G',tiktok:'TT',pmax:'PM',maps:'MAP',instagram:'IG'};
@@ -18,6 +18,9 @@
  var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
  if(variant&&variant.returning&&form.elements.visitor)form.elements.visitor.value='راجع ألعب';
  function value(name){var field=form.elements[name];return field?String(field.value||'').trim():'';}
+ function cairoDay(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+ function offpeakExpired(){return intent==='offpeak'&&cairoDay()>'2026-11-01';}
+ if(offpeakExpired()){var offerStatus=document.getElementById('offer-status');if(offerStatus)offerStatus.textContent='انتهت تجربة عرض ساعتين بـ١٠٠ جنيه يوم١ نوفمبر٢٠٢٦. تواصل لمعرفة الأسعار الحالية.';var submitButton=form.querySelector&&form.querySelector('button[type=submit]');if(submitButton)submitButton.disabled=true;}
  form.addEventListener('invalid',function(event){
   var field=event.target;
   if(typeof field.setCustomValidity!=='function')return;
@@ -28,6 +31,7 @@
  form.addEventListener('submit',function(event){
   event.preventDefault();
   if(form.reportValidity&&!form.reportValidity())return;
+  if(offpeakExpired())return;
   var message=(knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
   [['visitor','نوع الزيارة'],['activity','النشاط'],['age','الفئة العمرية'],['people','عدد المشاركين'],['equipment','المعدات']].forEach(function(pair){var v=value(pair[0]);if(v)message+='\n'+pair[1]+': '+v;});
   var date=value('day');

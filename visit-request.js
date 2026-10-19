@@ -3,6 +3,17 @@
  'use strict';
  var form=document.getElementById('visit-request');
  if(!form)return;
+ // Existing Google Ads website directions action. Only fire on an actual Maps click.
+ // Google-hosted call/directions actions are separate and cannot be fabricated here.
+ if(typeof window.gtag==='function')window.gtag('config','AW-11333738787');
+ if(typeof document.addEventListener==='function')document.addEventListener('click',function(event){
+  var link=event.target&&event.target.closest?event.target.closest('a[href]'):null;
+  if(!link)return;
+  var href=link.getAttribute('href')||'';
+  if(/^https:\/\/(maps\.app\.goo\.gl\/|(?:www\.)?google\.com\/maps)/i.test(href)&&typeof window.gtag==='function'){
+   window.gtag('event','conversion',{send_to:'AW-11333738787/pGdoCM3xvoAaEKPCrJwq',transport_type:'beacon'});
+  }
+ });
  var intent=document.body.getAttribute('data-visit-intent');
  var intents={visit:{code:'VISIT-01',label:'زيارة للبارك'},class:{code:'CLASS-01',label:'كلاس تدريب'},birthday:{code:'PARTY-01',label:'عيد ميلاد'},offpeak:{code:'OFFPEAK-01',label:'عرض ساعتين بـ١٠٠ جنيه، الاثنين–الأربعاء، داخل٢–٥ عصرًا، آخر دخول٣ عصرًا؛ الدخول فقط والتأجير والتدريب منفصلان'}};
  if(!Object.prototype.hasOwnProperty.call(intents,intent))return;

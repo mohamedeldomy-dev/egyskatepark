@@ -28,6 +28,16 @@
  var variant=Object.prototype.hasOwnProperty.call(creativeMap,creative)&&creativeMap[creative].intent===intent?creativeMap[creative]:null;
  var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
  if(variant&&variant.returning&&form.elements.visitor)form.elements.visitor.value='راجع ألعب';
+ // A quick enquiry must not require completing the optional detailed form.
+ // Only allowlisted source codes are measured; message text stays out of Analytics.
+ var quickLink=document.querySelector&&document.querySelector('[data-quick-whatsapp]');
+ if(quickLink&&(intent==='class'||intent==='visit')){
+  var quickMessage=(knownSource?channelNames[source]+' - ':'')+(intent==='class'?'أول كلاس':'زيارة البارك')+' ('+code+').\n'+(intent==='class'?'أهلًا، عايز أسأل عن أول كلاس بـ٣٠٠ جنيه بالمعدات. إيه المواعيد المتاحة؟':'أهلًا، عايز أسأل عن زيارة البارك. الدخول ١٥٠ جنيه والتأجير منفصل؛ ممكن التفاصيل؟');
+  quickLink.href='https://wa.me/201026189811?text='+encodeURIComponent(quickMessage);
+  quickLink.addEventListener('click',function(){
+   if(typeof window.gtag==='function')window.gtag('event','whatsapp_click',{link_url:'https://wa.me/201026189811',page:location.pathname,intent_type:intent,source_code:code,creative_id:variant?creative:'unspecified',intent_stage:'whatsapp_open_only',cta_position:'hero_quick',transport_type:'beacon'});
+  });
+ }
  function value(name){var field=form.elements[name];return field?String(field.value||'').trim():'';}
  function cairoDay(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
  function offpeakExpired(){return intent==='offpeak'&&cairoDay()>'2026-11-01';}

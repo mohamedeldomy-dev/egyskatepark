@@ -28,7 +28,7 @@
  var variant=Object.prototype.hasOwnProperty.call(creativeMap,creative)&&creativeMap[creative].intent===intent?creativeMap[creative]:null;
  var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
  // Recognise only approved campaign identifiers; never echo arbitrary query text.
- var classCampaigns={phase2_newclients_20261025:{label:'Google PMax New Clients',suffix:'NEW'},phase2_lessons_20261025:{label:'Google Search Lessons',suffix:'LESSONS'},extra5000_youtube_20261025:{label:'YouTube Extra5000 C',suffix:'EXTRA-C'},extra5000_weekend_20261029:{label:'Google PMax Extra5000 D Weekend',suffix:'EXTRA-D'}};
+ var classCampaigns={phase2_newclients_20261025:{label:'Google PMax New Clients',suffix:'NEW'},phase2_lessons_20261025:{label:'Google Search Lessons',suffix:'LESSONS'},extra5000_compound_20261026:{label:'Google PMax Extra5000 B Compound',suffix:'EXTRA-B'},extra5000_youtube_20261025:{label:'YouTube Extra5000 C',suffix:'EXTRA-C'},extra5000_weekend_20261029:{label:'Google PMax Extra5000 D Weekend',suffix:'EXTRA-D'}};
  var campaignKey=query.get('utm_campaign');
  var classCampaign=intent==='class'&&knownSource&&Object.prototype.hasOwnProperty.call(classCampaigns,campaignKey)?classCampaigns[campaignKey]:null;
  if(intent==='visit'&&knownSource&&campaignKey==='extra5000_visits_20261025')classCampaign={label:'Google PMax Extra5000 A Visits',suffix:'EXTRA-A'};

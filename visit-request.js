@@ -27,10 +27,11 @@
  var creative=query.get('utm_content');
  var variant=Object.prototype.hasOwnProperty.call(creativeMap,creative)&&creativeMap[creative].intent===intent?creativeMap[creative]:null;
  var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
- // Recognise only the two approved class campaigns; never echo arbitrary query text.
- var classCampaigns={phase2_newclients_20261025:{label:'Google PMax New Clients',suffix:'NEW'},phase2_lessons_20261025:{label:'Google Search Lessons',suffix:'LESSONS'}};
+ // Recognise only approved campaign identifiers; never echo arbitrary query text.
+ var classCampaigns={phase2_newclients_20261025:{label:'Google PMax New Clients',suffix:'NEW'},phase2_lessons_20261025:{label:'Google Search Lessons',suffix:'LESSONS'},extra5000_youtube_20261025:{label:'YouTube Extra5000 C',suffix:'EXTRA-C'},extra5000_weekend_20261029:{label:'Google PMax Extra5000 D Weekend',suffix:'EXTRA-D'}};
  var campaignKey=query.get('utm_campaign');
  var classCampaign=intent==='class'&&knownSource&&Object.prototype.hasOwnProperty.call(classCampaigns,campaignKey)?classCampaigns[campaignKey]:null;
+ if(intent==='visit'&&knownSource&&campaignKey==='extra5000_visits_20261025')classCampaign={label:'Google PMax Extra5000 A Visits',suffix:'EXTRA-A'};
  if(classCampaign)code+='-'+classCampaign.suffix;
  if(variant&&variant.returning&&form.elements.visitor)form.elements.visitor.value='راجع ألعب';
  // A quick enquiry must not require completing the optional detailed form.
@@ -58,7 +59,7 @@
   event.preventDefault();
   if(form.reportValidity&&!form.reportValidity())return;
   if(offpeakExpired())return;
-  var message=(classCampaign?classCampaign.label+' - أول كلاس\n':knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
+  var message=(classCampaign?classCampaign.label+' - '+(intent==='class'?'أول كلاس':'أول زيارة')+'\n':knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
   [['visitor','نوع الزيارة'],['activity','النشاط'],['age','الفئة العمرية'],['people','عدد المشاركين'],['equipment','المعدات']].forEach(function(pair){var v=value(pair[0]);if(v)message+='\n'+pair[1]+': '+v;});
   var date=value('day');
   if(/^\d{4}-\d{2}-\d{2}$/.test(date))message+='\nاليوم المفضل: '+date;

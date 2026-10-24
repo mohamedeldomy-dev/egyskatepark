@@ -11,7 +11,7 @@
   gift:{code:'DAY25-GIFT-INTEREST',title:'مهتم تهدي حصة سكيت؟',body:'اسأل أو سجّل اهتمامك بفكرة حصة سكيت هدية. لا نبيع قسائم في هذه الصفحة؛ الإتاحة والسعر والصلاحية وشروط الاستخدام لم تُعتمد بعد. لا يوجد دفع أو شراء أو حجز مؤكد.',en:'Ask or register interest in a skate-class gift idea. Vouchers are not sold here. Availability, price and terms are not confirmed.'}
  };
  var key=new URLSearchParams(location.search).get('idea');
- if(!Object.prototype.hasOwnProperty.call(configs,key)){document.getElementById('copy').textContent='اختار نوع الاستفسار من الروابط أدناه؛ لا يوجد حجز تلقائي.';return;}
+ if(!Object.prototype.hasOwnProperty.call(configs,key)){document.getElementById('whatsapp').className='';document.getElementById('copy').textContent='اختار نوع الاستفسار من الروابط أدناه؛ لا يوجد حجز تلقائي.';return;}
  var c=configs[key], message=c.code+' | Google '+key+'\nأهلًا إيجي سكيت بارك، '+(key.indexOf('camp_')===0?'مهتم بتفاصيل كامب سكيت مقترح عندما يتم اعتمادها، ده استفسار مش حجز.':key==='gift'?'عايز أسأل عن فكرة حصة سكيت هدية وهل متاحة فعلًا؛ ده اهتمام فقط مش شراء.':key==='corporate'?'عايز أسأل عن إمكانية يوم لفريق الشركة للكبار؛ ياريت تأكيد البرنامج والتوافر قبل أي اتفاق.':'عايز أستفسر عن السكيت أو الرولر والمواعيد والتوافر قبل الزيارة.');
  document.title=c.title+' | EGY Skatepark';
  document.getElementById('title').textContent=c.title;

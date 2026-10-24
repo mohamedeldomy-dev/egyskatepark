@@ -27,12 +27,17 @@
  var creative=query.get('utm_content');
  var variant=Object.prototype.hasOwnProperty.call(creativeMap,creative)&&creativeMap[creative].intent===intent?creativeMap[creative]:null;
  var code=intents[intent].code+(knownSource?'-'+sources[source]+'-'+media[medium]:'-U')+(variant?'-'+variant.suffix:'');
+ // Recognise only the two approved class campaigns; never echo arbitrary query text.
+ var classCampaigns={phase2_newclients_20261025:{label:'Google PMax New Clients',suffix:'NEW'},phase2_lessons_20261025:{label:'Google Search Lessons',suffix:'LESSONS'}};
+ var campaignKey=query.get('utm_campaign');
+ var classCampaign=intent==='class'&&knownSource&&Object.prototype.hasOwnProperty.call(classCampaigns,campaignKey)?classCampaigns[campaignKey]:null;
+ if(classCampaign)code+='-'+classCampaign.suffix;
  if(variant&&variant.returning&&form.elements.visitor)form.elements.visitor.value='راجع ألعب';
  // A quick enquiry must not require completing the optional detailed form.
  // Only allowlisted source codes are measured; message text stays out of Analytics.
  var quickLink=document.querySelector&&document.querySelector('[data-quick-whatsapp]');
  if(quickLink&&(intent==='class'||intent==='visit')){
-  var quickMessage=(knownSource?channelNames[source]+' - ':'')+(intent==='class'?'أول كلاس':'زيارة البارك')+' ('+code+').\n'+(intent==='class'?'أهلًا، عايز أسأل عن أول كلاس بـ٣٠٠ جنيه بالمعدات. إيه المواعيد المتاحة؟':'أهلًا، عايز أسأل عن زيارة البارك. الدخول ١٥٠ جنيه والتأجير منفصل؛ ممكن التفاصيل؟');
+  var quickMessage=(classCampaign?classCampaign.label+' - ':knownSource?channelNames[source]+' - ':'')+(intent==='class'?'أول كلاس':'زيارة البارك')+' ('+code+').\n'+(intent==='class'?'أهلًا، عايز أسأل عن أول كلاس بـ٣٠٠ جنيه بالمعدات. إيه المواعيد المتاحة؟':'أهلًا، عايز أسأل عن زيارة البارك. الدخول ١٥٠ جنيه والتأجير منفصل؛ ممكن التفاصيل؟');
   quickLink.href='https://wa.me/201026189811?text='+encodeURIComponent(quickMessage);
   quickLink.addEventListener('click',function(){
    if(typeof window.gtag==='function')window.gtag('event','whatsapp_click',{link_url:'https://wa.me/201026189811',page:location.pathname,intent_type:intent,source_code:code,creative_id:variant?creative:'unspecified',intent_stage:'whatsapp_open_only',cta_position:'hero_quick',transport_type:'beacon'});
@@ -53,7 +58,7 @@
   event.preventDefault();
   if(form.reportValidity&&!form.reportValidity())return;
   if(offpeakExpired())return;
-  var message=(knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
+  var message=(classCampaign?classCampaign.label+' - أول كلاس\n':knownSource?channelNames[source]+' - '+(intent==='class'?'أول كلاس':intent==='birthday'?'عيد ميلاد':'أول زيارة')+'\n':'')+'أهلًا إيجي سكيت بارك، عايز أسأل عن '+intents[intent].label+' ('+code+').';
   [['visitor','نوع الزيارة'],['activity','النشاط'],['age','الفئة العمرية'],['people','عدد المشاركين'],['equipment','المعدات']].forEach(function(pair){var v=value(pair[0]);if(v)message+='\n'+pair[1]+': '+v;});
   var date=value('day');
   if(/^\d{4}-\d{2}-\d{2}$/.test(date))message+='\nاليوم المفضل: '+date;

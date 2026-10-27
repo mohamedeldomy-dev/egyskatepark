@@ -20,7 +20,7 @@
  var query=new URLSearchParams(location.search);
  var sources={youtube:'YT',google:'G',tiktok:'TT',pmax:'PM',maps:'MAP',instagram:'IG'};
  var channelNames={youtube:'YouTube',google:'Google',tiktok:'TikTok',pmax:'Google PMax',maps:'Google Maps',instagram:'Instagram'};
- var media={paid_video:'P',cpc:'P',organic_video:'O',organic:'O'};
+ var media={paid_video:'P',cpc:'P',demandgen:'P',organic_video:'O',organic:'O'};
  var source=query.get('utm_source'),medium=query.get('utm_medium');
  var knownSource=Object.prototype.hasOwnProperty.call(sources,source)&&Object.prototype.hasOwnProperty.call(media,medium);
  var creativeMap={class_a:{intent:'class',suffix:'A'},class_b:{intent:'class',suffix:'B'},visit_a:{intent:'visit',suffix:'A'},visit_b:{intent:'visit',suffix:'B'},return_a:{intent:'visit',suffix:'R-A',returning:true},return_b:{intent:'visit',suffix:'R-B',returning:true}};

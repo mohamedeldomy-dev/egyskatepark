@@ -20,7 +20,7 @@ for (const file of files) {
   if (html.includes('a[href*=wa.me]')) errors.push(name+': invalid WhatsApp click selector');
   if (!/<head[\s>]/i.test(html)) continue;
   if ((html.match(/src="\/navigation\.js\?v=20261117"/g)||[]).length !== 1 ||
-      !html.includes('href="/navigation.css?v=20261117"')) errors.push(name+': missing shared navigation');
+      !html.includes('href="/navigation.css?v=20261117-2"')) errors.push(name+': missing shared navigation');
   const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(x=>x[1]));
   for (const match of html.matchAll(/\bhref="#([^"]+)"/g)) {
     anchors++;

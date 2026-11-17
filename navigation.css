@@ -1,5 +1,9 @@
 /* Section navigation is immediate; free scrolling stays under user control. */
 html { scroll-behavior: auto !important; }
+/* A later light-theme rule used dark ink on this dark anchored section. */
+html .premium-day .premium-day-copy > p {
+  color: rgba(255, 243, 227, 0.88);
+}
 :where(section[id], article[id], main[id], div[id="content"]) {
   scroll-margin-block-start: 88px;
 }

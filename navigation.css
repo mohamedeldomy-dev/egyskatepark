@@ -1,0 +1,10 @@
+/* Section navigation is immediate; free scrolling stays under user control. */
+html { scroll-behavior: auto !important; }
+:where(section[id], article[id], main[id], div[id="content"]) {
+  scroll-margin-block-start: 88px;
+}
+@media (max-width: 720px) {
+  :where(section[id], article[id], main[id], div[id="content"]) {
+    scroll-margin-block-start: 76px;
+  }
+}

@@ -17,6 +17,7 @@ let anchors = 0, resources = 0;
 for (const file of files) {
   const html = fs.readFileSync(file,'utf8');
   const name = path.relative(root,file);
+  if (html.includes('a[href*=wa.me]')) errors.push(name+': invalid WhatsApp click selector');
   if (!/<head[\s>]/i.test(html)) continue;
   if ((html.match(/src="\/navigation\.js\?v=20261117"/g)||[]).length !== 1 ||
       !html.includes('href="/navigation.css?v=20261117"')) errors.push(name+': missing shared navigation');
